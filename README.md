@@ -9,7 +9,7 @@ The current setup is designed to run entirely on a local machine for demos and p
 - Database: SQLite
 - Auth: JWT
 - Realtime: Socket.io
-- Local AI integration: Ollama
+- Local AI integration: Ollama (qwen2.5:1.5b)
 
 ## What The App Does
 
