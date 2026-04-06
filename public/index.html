@@ -1,0 +1,2709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Roam.ai - Travel Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Unbounded:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--sand:#F7F3EE;--sand2:#EFE7DE;--sand3:#D8C9BC;
+--ink:#2B2118;--ink2:#4A3A2F;--ink3:#6B5A4E;
+--teal:#1FA4A9;--teal2:#178488;--teal3:#D6F0F1;
+--amber:#F4A261;--amber2:#E76F51;--amber3:#FDE6D3;
+--rose:#D64545;--rose2:#B93737;--rose3:#F9E1DC;
+--coral:#E07A5F;--coral2:#C9654A;--coral3:#F9E1DC;
+--success:#4CAF7A;--success3:#E4F4EC;
+--info:#1FA4A9;
+--white:#FCFAF7;--card:#FBF7F2;
+--radius:16px;--radius-sm:10px;
+--shadow:0 10px 30px rgba(43,33,24,0.08);
+--shadow-lg:0 18px 44px rgba(43,33,24,0.14);
+--font-body:'Poppins',sans-serif;
+--font-display:'Unbounded',sans-serif;
+--font-title:var(--font-display);
+}
+body{font-family:var(--font-body);background:var(--sand);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+h1,h2,h3,h4,.display{font-family:var(--font-display);}
+body *{font-family:var(--font-body) !important;}
+.nav-tab,.avatar,.hero-tag,.q-label,.range-val,.step-counter,.rec-name,.filter-label,.dest-banner h2,.section-title,.airport-code,.price,.hotel-name,.modal h3,.booking-summary .line.total,.confirmed h3,.ref-code,.trip-sum-val,.activity-name,.translate-result h4,.auth-card h2,.section-head h2,.mobile-tab,.inbox-banner h4,.inbox-request-info strong,.connected-badge{
+  font-family:var(--font-display) !important;
+}
+.logo{
+  font-family:var(--font-title) !important;
+  font-size:2rem;
+  font-weight:400;
+  letter-spacing:0.01em;
+  line-height:1;
+}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:var(--white);border-bottom:1px solid var(--sand2);padding:0 2rem;}
+.nav-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;}
+.logo{font-family:var(--font-title) !important;font-size:2rem;font-weight:400;color:var(--ink);letter-spacing:0.01em;}
+.logo span{color:var(--teal);}
+.nav-tabs{display:flex;gap:0;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--sand2);background:var(--sand);}
+.nav-tab{padding:8px 20px;font-family:'Syne',sans-serif;font-size:0.82rem;font-weight:600;letter-spacing:0.3px;cursor:pointer;border:none;color:var(--ink2);transition:all 0.25s ease;white-space:nowrap;position:relative;isolation:isolate;}
+.nav-tab::before{content:'';position:absolute;inset:0;opacity:.28;transition:opacity .25s ease,transform .25s ease;z-index:-1;}
+.nav-tab:hover::before{opacity:.42;transform:translateY(-1px);}
+.nav-tab.active{color:var(--ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.28);}
+.nav-tab.active::before{opacity:1;}
+.nav-tab:disabled{opacity:0.42;cursor:not-allowed;filter:saturate(.75);}
+#tab-plan::before{background:linear-gradient(135deg,#E8F6F4 0%, #D6F0F1 100%);}
+#tab-book::before{background:linear-gradient(135deg,#FCEFE3 0%, #FDE6D3 100%);}
+#tab-enjoy::before{background:linear-gradient(135deg,#FBEDE8 0%, #F9E1DC 100%);}
+#tab-connect::before{background:linear-gradient(135deg,#FAEDEA 0%, #F9E1DC 100%);}
+#tab-plan.active,#tab-book.active,#tab-enjoy.active,#tab-connect.active{text-shadow:none;}
+#tab-plan.active{box-shadow:0 6px 16px rgba(31,164,169,.10);}
+#tab-book.active{box-shadow:0 6px 16px rgba(244,162,97,.10);}
+#tab-enjoy.active{box-shadow:0 6px 16px rgba(224,122,95,.10);}
+#tab-connect.active{box-shadow:0 6px 16px rgba(199,125,139,.10);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.user-badge{display:flex;align-items:center;gap:8px;font-size:0.85rem;color:var(--ink3);}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--teal);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:0.75rem;font-weight:700;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;cursor:pointer;transition:all 0.2s;border:none;}
+.btn-primary{background:var(--ink);color:var(--white);}
+.btn-primary:hover{background:var(--ink2);}
+.btn-teal{background:var(--teal);color:var(--white);}
+.btn-teal:hover{background:var(--teal2);}
+.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--sand3);}
+.btn-outline:hover{background:var(--sand);border-color:var(--ink3);}
+.btn-sm{padding:7px 14px;font-size:0.82rem;}
+.btn-lg{padding:14px 28px;font-size:1rem;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+
+/* PAGE CONTAINER */
+.page{display:none;max-width:1100px;margin:0 auto;padding:2.5rem 2rem;}
+.page.active{display:block;}
+
+/* HERO SECTION */
+.hero{text-align:center;padding:4rem 2rem 3rem;max-width:700px;margin:0 auto;}
+.hero-tag{display:inline-block;background:var(--teal3);color:var(--teal);font-size:0.78rem;font-weight:600;font-family:'Syne',sans-serif;letter-spacing:1px;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:1.5rem;}
+.hero h1{font-size:3.2rem;font-weight:800;line-height:1.15;letter-spacing:-1.5px;margin-bottom:1.2rem;color:var(--ink);}
+.hero h1 em{font-style:normal;color:var(--teal);}
+.hero p{font-size:1.1rem;color:var(--ink3);line-height:1.7;font-weight:300;}
+
+/* CARD */
+.card{background:var(--card);border-radius:var(--radius);border:1px solid rgba(107,90,78,0.14);padding:1.5rem;box-shadow:var(--shadow);}
+.card+.card{margin-top:1rem;}
+
+/* QUESTION FORM */
+.q-form{max-width:680px;margin:0 auto;}
+.q-step{animation:fadeUp 0.35s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.q-label{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:600;margin-bottom:1rem;color:var(--ink);}
+.q-sub{font-size:0.88rem;color:var(--ink3);margin-top:-0.5rem;margin-bottom:1rem;}
+.chip-grid{display:flex;flex-wrap:wrap;gap:10px;}
+.chip{padding:10px 18px;border-radius:100px;border:1.5px solid var(--sand3);background:var(--white);font-size:0.88rem;cursor:pointer;transition:all 0.18s;font-weight:400;color:var(--ink2);}
+.chip:hover{border-color:var(--teal);color:var(--teal);}
+.chip.selected{background:var(--ink);color:var(--white);border-color:var(--ink);}
+input[type=range]{width:100%;accent-color:var(--teal);height:4px;margin:1rem 0;}
+.range-labels{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--ink3);}
+.range-val{font-family:'Syne',sans-serif;font-weight:700;font-size:1.4rem;color:var(--teal);text-align:center;margin:0.5rem 0;}
+.progress-bar{height:4px;background:var(--sand2);border-radius:4px;margin-bottom:2rem;}
+.progress-fill{height:100%;background:var(--teal);border-radius:4px;transition:width 0.4s ease;}
+.step-counter{text-align:right;font-size:0.8rem;color:var(--ink3);margin-bottom:0.75rem;font-family:'Syne',sans-serif;}
+
+/* RECOMMENDATION CARDS */
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem;}
+.rec-card{background:var(--card);border-radius:var(--radius);border:1px solid rgba(107,90,78,0.14);overflow:hidden;box-shadow:var(--shadow);transition:transform 0.2s,box-shadow 0.2s,border-color 0.2s;cursor:pointer;}
+.rec-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:rgba(31,164,169,0.22);}
+.rec-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:5rem;position:relative;overflow:hidden;}
+.place-visual{font-family:'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji',sans-serif !important;font-weight:400 !important;line-height:1;display:inline-block;}
+.place-flag{width:88px;height:66px;object-fit:cover;border-radius:14px;box-shadow:0 10px 24px rgba(43,33,24,0.12);display:block;}
+.rec-body{padding:1.25rem;}
+.rec-name{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.25rem;}
+.rec-country{font-size:0.82rem;color:var(--ink3);margin-bottom:0.75rem;}
+.rec-why{font-size:0.88rem;color:var(--ink2);line-height:1.6;margin-bottom:1rem;}
+.rec-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem;}
+.tag{padding:4px 12px;border-radius:100px;font-size:0.75rem;font-weight:500;}
+.tag-teal{background:var(--teal3);color:var(--teal);}
+.tag-amber{background:var(--amber3);color:var(--amber);}
+.tag-rose{background:var(--rose3);color:var(--rose);}
+.match-score{display:flex;align-items:center;gap:8px;font-size:0.82rem;color:var(--ink3);}
+.match-bar{flex:1;height:4px;background:var(--sand2);border-radius:4px;}
+.match-fill{height:100%;background:var(--teal2);border-radius:4px;}
+
+/* FILTERS */
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:2rem;align-items:center;}
+.filter-label{font-family:'Syne',sans-serif;font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--ink3);margin-right:4px;}
+.filter-chip{padding:7px 16px;border-radius:100px;border:1.5px solid var(--sand3);background:var(--white);font-size:0.82rem;cursor:pointer;transition:all 0.18s;color:var(--ink2);}
+.filter-chip.active{background:var(--teal);color:var(--white);border-color:var(--teal);}
+
+/* BOOK PAGE */
+.book-header{margin-bottom:2rem;}
+.dest-banner{background:var(--ink);color:var(--white);border-radius:var(--radius);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;}
+.dest-banner h2{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;}
+.dest-banner p{font-size:0.9rem;opacity:0.7;margin-top:4px;}
+.section-title{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
+.section-title::after{content:'';flex:1;height:1px;background:var(--sand2);}
+.flight-card,.hotel-card{background:var(--card);border:1.5px solid rgba(107,90,78,0.12);border-radius:var(--radius);padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;cursor:pointer;transition:all 0.2s;flex-wrap:wrap;gap:1rem;box-shadow:0 8px 22px rgba(43,33,24,0.06);}
+.flight-card.selected,.hotel-card.selected{border-color:var(--teal);background:var(--teal3);}
+.flight-card:hover,.hotel-card:hover{border-color:var(--teal);}
+.flight-route{display:flex;align-items:center;gap:12px;}
+.airport-code{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;}
+.flight-arrow{color:var(--ink3);font-size:0.8rem;}
+.flight-meta{font-size:0.82rem;color:var(--ink3);}
+.price{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--ink);}
+.price small{font-size:0.75rem;font-weight:400;color:var(--ink3);}
+.stars{color:var(--amber2);letter-spacing:-1px;}
+.hotel-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;}
+.hotel-meta{font-size:0.82rem;color:var(--ink3);margin-top:4px;}
+.amenity-pill{display:inline-block;padding:3px 10px;background:var(--sand);border-radius:100px;font-size:0.75rem;color:var(--ink3);margin:3px 3px 0 0;}
+.select-indicator{width:24px;height:24px;border-radius:50%;border:2px solid var(--sand3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
+.selected .select-indicator{background:var(--teal);border-color:var(--teal);color:var(--white);}
+
+/* PAYMENT MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,21,16,0.6);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px);}
+.modal{background:var(--white);border-radius:var(--radius);max-width:480px;width:100%;padding:2rem;animation:popIn 0.3s ease;}
+@keyframes popIn{from{opacity:0;transform:scale(0.93)}to{opacity:1;transform:scale(1)}}
+.modal h3{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:0.25rem;}
+.modal-sub{font-size:0.88rem;color:var(--ink3);margin-bottom:1.5rem;}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-size:0.82rem;font-weight:500;color:var(--ink3);margin-bottom:6px;}
+.form-group input,.form-group select{width:100%;padding:11px 14px;border:1.5px solid var(--sand2);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:0.92rem;background:var(--white);color:var(--ink);outline:none;transition:border 0.2s;}
+.form-group input:focus,.form-group select:focus{border-color:var(--teal);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.booking-summary{background:var(--sand);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1.5rem;font-size:0.88rem;}
+.booking-summary .line{display:flex;justify-content:space-between;padding:4px 0;color:var(--ink3);}
+.booking-summary .line.total{font-family:'Syne',sans-serif;font-weight:700;color:var(--ink);font-size:1rem;border-top:1px solid var(--sand2);margin-top:8px;padding-top:10px;}
+.confirmed{text-align:center;padding:2rem 0;}
+.confirmed .tick{width:60px;height:60px;border-radius:50%;background:var(--teal);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1rem;}
+.confirmed h3{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--ink);margin-bottom:0.5rem;}
+.ref-code{background:var(--sand);padding:10px 20px;border-radius:var(--radius-sm);font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:var(--teal);display:inline-block;margin:1rem 0;}
+
+/* ENJOY PAGE */
+.trip-summary-banner{background:linear-gradient(135deg,var(--ink) 0%,var(--ink2) 100%);color:var(--white);border-radius:var(--radius);padding:2rem;margin-bottom:2rem;display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;}
+.trip-sum-item{font-size:0.85rem;opacity:0.7;margin-bottom:4px;}
+.trip-sum-val{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;}
+.activity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;}
+.activity-card{background:var(--card);border-radius:var(--radius);border:1px solid rgba(107,90,78,0.12);padding:1.25rem;box-shadow:0 8px 22px rgba(43,33,24,0.06);transition:transform 0.2s,box-shadow 0.2s;}
+.activity-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(43,33,24,0.1);}
+.activity-icon{font-size:2.2rem;margin-bottom:0.75rem;}
+.activity-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:0.4rem;}
+.activity-meta{font-size:0.82rem;color:var(--ink3);margin-bottom:0.75rem;line-height:1.5;}
+.activity-badges{display:flex;flex-wrap:wrap;gap:6px;}
+
+/* IMAGE TRANSLATE */
+.translate-zone{border:2px dashed var(--sand3);border-radius:var(--radius);padding:3rem 2rem;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--white);}
+.translate-zone:hover,.translate-zone.drag-over{border-color:var(--teal);background:var(--teal3);}
+.translate-zone p{color:var(--ink3);font-size:0.9rem;margin-top:0.5rem;}
+.translate-result{background:var(--card);border-radius:var(--radius);border:1px solid var(--sand2);padding:1.5rem;margin-top:1rem;}
+.translate-result h4{font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.75rem;color:var(--teal);}
+.translate-result p{font-size:0.92rem;line-height:1.7;color:var(--ink2);}
+.uploaded-img{max-width:100%;max-height:250px;border-radius:var(--radius-sm);margin-bottom:1rem;display:block;margin:0 auto 1rem;}
+
+/* LOADING */
+.loading{display:flex;align-items:center;gap:10px;color:var(--ink3);font-size:0.9rem;padding:2rem;}
+.spinner{width:20px;height:20px;border:2.5px solid var(--sand2);border-top-color:var(--teal);border-radius:50%;animation:spin 0.7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.skeleton{background:var(--sand2);border-radius:8px;animation:shimmer 1.2s ease infinite;}
+@keyframes shimmer{0%,100%{opacity:0.5}50%{opacity:1}}
+
+/* AUTH */
+.auth-card{max-width:420px;margin:3rem auto;background:var(--card);border-radius:var(--radius);padding:2.5rem;box-shadow:var(--shadow-lg);}
+.auth-card h2{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;margin-bottom:0.5rem;}
+.auth-tabs{display:flex;gap:0;margin-bottom:2rem;border-bottom:2px solid var(--sand2);}
+.auth-tab{padding:10px 24px;cursor:pointer;font-weight:500;font-size:0.9rem;color:var(--ink3);border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.2s;}
+.auth-tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+.divider{text-align:center;color:var(--ink3);font-size:0.82rem;margin:1rem 0;position:relative;}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:44%;height:1px;background:var(--sand2);}
+.divider::before{left:0}
+.divider::after{right:0}
+#auth-modal{position:fixed;inset:0;align-items:center;justify-content:center;overflow:hidden;padding:1rem;}
+#auth-modal .modal{width:min(560px,100%);max-height:calc(100vh - 2rem);overflow-y:auto;margin:0;overscroll-behavior:contain;}
+#auth-modal textarea{max-width:100%;}
+
+/* SECTIONS */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+.section-head h2{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .hero h1{font-size:2.2rem;}
+  .nav-tabs{display:none;}
+  .mobile-tabs{display:flex!important;}
+  .rec-grid{grid-template-columns:1fr;}
+  .flight-card,.hotel-card{flex-direction:column;align-items:flex-start;}
+  #auth-modal{padding:0.5rem;}
+  #auth-modal .modal{padding:1.25rem;max-height:calc(100vh - 1rem);}
+}
+.mobile-tabs{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--sand2);z-index:100;padding:0.5rem 0;}
+.mobile-tab{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 4px;cursor:pointer;font-size:0.7rem;color:var(--ink3);font-family:'Syne',sans-serif;font-weight:600;border:none;background:transparent;position:relative;transition:all .25s ease;}
+.mobile-tab::before{content:'';position:absolute;left:8px;right:8px;top:4px;bottom:4px;border-radius:14px;opacity:.14;z-index:-1;transition:opacity .25s ease, transform .25s ease;}
+.mobile-tab.active{color:var(--ink);transform:translateY(-1px);}
+.mobile-tab.active::before{opacity:1;}
+#mtab-plan::before{background:linear-gradient(135deg,#E8F6F4 0%, #D6F0F1 100%);}
+#mtab-book::before{background:linear-gradient(135deg,#FCEFE3 0%, #FDE6D3 100%);}
+#mtab-enjoy::before{background:linear-gradient(135deg,#FBEDE8 0%, #F9E1DC 100%);}
+#mtab-connect::before{background:linear-gradient(135deg,#FAEDEA 0%, #F9E1DC 100%);}
+
+/* CONNECTION STATES */
+.connect-btn-group{display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap;}
+.btn-connect{background:var(--teal);color:var(--white);}
+.btn-connect:hover{background:var(--teal2);}
+.btn-pending{background:var(--amber3);color:var(--amber);border:1.5px solid var(--amber2);cursor:default;}
+.btn-pending:hover{background:var(--amber3);}
+.btn-connected{background:var(--sand);color:var(--teal);border:1.5px solid var(--teal);cursor:default;}
+.inbox-banner{background:var(--amber3);border:1.5px solid var(--amber2);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;}
+.inbox-banner h4{font-family:'Syne',sans-serif;font-weight:700;color:var(--amber);margin-bottom:2px;}
+.inbox-banner p{font-size:0.85rem;color:var(--ink2);}
+.inbox-request{background:var(--card);border:1px solid var(--sand2);border-radius:var(--radius-sm);padding:1rem 1.25rem;margin-bottom:0.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;}
+.inbox-request-info strong{font-family:'Syne',sans-serif;font-size:0.95rem;}
+.inbox-request-info p{font-size:0.82rem;color:var(--ink3);margin-top:3px;}
+.connected-badge{display:inline-flex;align-items:center;gap:5px;background:var(--teal3);color:var(--teal);font-size:0.75rem;font-weight:600;font-family:'Syne',sans-serif;padding:3px 10px;border-radius:100px;margin-bottom:6px;}
+
+.bg-decoration{position:fixed;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(13,115,119,0.06) 0%,transparent 70%);pointer-events:none;z-index:0;}
+.bg-decoration2{position:fixed;bottom:-300px;left:-200px;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(200,134,10,0.05) 0%,transparent 70%);pointer-events:none;z-index:0;}
+</style>
+</head>
+<body>
+
+<div class="bg-decoration"></div>
+<div class="bg-decoration2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Wander<span>AI</span></div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('plan')" id="tab-plan">✦ Plan</button>
+      <button class="nav-tab" onclick="showPage('book')" id="tab-book" disabled>⊹ Book</button>
+      <button class="nav-tab" onclick="showPage('enjoy')" id="tab-enjoy" disabled>◈ Enjoy</button>
+      <button class="nav-tab" onclick="showPage('connect')" id="tab-connect">🤝 Connect</button>
+    </div>
+    <div class="nav-right" id="nav-right">
+      <button class="btn btn-primary btn-sm" onclick="showAuth()">Sign in</button>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE TABS -->
+<div class="mobile-tabs">
+  <button class="mobile-tab active" onclick="showPage('plan')" id="mtab-plan">✦<br>Plan</button>
+  <button class="mobile-tab" onclick="showPage('book')" id="mtab-book">⊹<br>Book</button>
+  <button class="mobile-tab" onclick="showPage('enjoy')" id="mtab-enjoy">◈<br>Enjoy</button>
+  <button class="mobile-tab" onclick="showPage('connect')" id="mtab-connect">🤝<br>Connect</button>
+</div>
+
+<!-- ==================== PLAN PAGE ==================== -->
+<div class="page active" id="page-plan">
+  <div id="plan-content">
+    <!-- Filled by JS -->
+  </div>
+</div>
+
+<!-- ==================== BOOK PAGE ==================== -->
+<div class="page" id="page-book">
+  <div id="book-content"></div>
+</div>
+
+<!-- ==================== ENJOY PAGE ==================== -->
+<div class="page" id="page-enjoy">
+  <div id="enjoy-content"></div>
+</div>
+
+<!-- ==================== CONNECT PAGE ==================== -->
+<div class="page" id="page-connect">
+  <div id="connect-content"></div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="auth-modal" style="display:none;">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+      <div class="logo">Roam.ai</div>
+      <button onclick="closeAuth()" style="background:none;border:none;cursor:pointer;font-size:1.4rem;color:var(--ink3);">×</button>
+    </div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuth('login')">Sign in</button>
+      <button class="auth-tab" onclick="switchAuth('register')">Create account</button>
+    </div>
+    <div id="auth-login">
+      <div class="form-group"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="login-pass" placeholder="••••••••"/></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem;" onclick="doLogin()">Sign in</button>
+      <div class="divider">or try demo</div>
+      <button class="btn btn-outline" style="width:100%;justify-content:center;" onclick="demoLogin()">Continue as Guest</button>
+    </div>
+    <div id="auth-register" style="display:none;">
+      <div class="form-group"><label>Name</label><input type="text" id="reg-name" placeholder="Your name"/></div>
+      <div class="form-group"><label>Email</label><input type="email" id="reg-email" placeholder="you@example.com"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="reg-pass" placeholder="Create a password"/></div>
+      <div class="form-group"><label>Your Location</label><input type="text" id="reg-location" placeholder="e.g. London, UK"/></div>
+      <div class="form-group"><label>Destination you're planning</label><input type="text" id="reg-dest" placeholder="e.g. Tokyo, Japan"/></div>
+      <div class="form-group"><label>Travel dates</label><input type="text" id="reg-dates" placeholder="e.g. July 10–20"/></div>
+      <div class="form-group">
+        <label>I am…</label>
+        <select id="reg-type">
+          <option value="seeking">Seeking a travel companion</option>
+          <option value="offering">Offering to join others</option>
+        </select>
+      </div>
+      <div class="form-group"><label>About your trip</label><textarea id="reg-bio" rows="3" placeholder="What are you looking for? What's your travel style?" style="width:100%;padding:11px 14px;border:1.5px solid var(--sand2);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:0.92rem;resize:vertical;"></textarea></div>
+      <div class="form-group">
+        <label>Interests (pick any)</label>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;" id="reg-interests-grid">
+          <div class="chip" style="font-size:0.8rem;padding:7px 14px;" onclick="toggleRegInterest(this,'Culture')" data-interest="Culture">Culture</div>
+          <div class="chip" style="font-size:0.8rem;padding:7px 14px;" onclick="toggleRegInterest(this,'Food')" data-interest="Food">Food</div>
+          <div class="chip" style="font-size:0.8rem;padding:7px 14px;" onclick="toggleRegInterest(this,'Adventure')" data-interest="Adventure">Adventure</div>
+          <div class="chip" style="font-size:0.8rem;padding:7px 14px;" onclick="toggleRegInterest(this,'Nature')" data-interest="Nature">Nature</div>
+          <div class="chip" style="font-size:0.8rem;padding:7px 14px;" onclick="toggleRegInterest(this,'Photography')" data-interest="Photography">Photography</div>
+          <div class="chip" style="font-size:0.8rem;padding:7px 14px;" onclick="toggleRegInterest(this,'Nightlife')" data-interest="Nightlife">Nightlife</div>
+          <div class="chip" style="font-size:0.8rem;padding:7px 14px;" onclick="toggleRegInterest(this,'Wellness')" data-interest="Wellness">Wellness</div>
+          <div class="chip" style="font-size:0.8rem;padding:7px 14px;" onclick="toggleRegInterest(this,'Art')" data-interest="Art">Art</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem;" onclick="doRegister()">Create account</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="payment-modal" style="display:none;">
+  <div class="modal" id="payment-modal-inner">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.25rem;">
+      <h3>Complete Booking</h3>
+      <button onclick="closePayment()" style="background:none;border:none;cursor:pointer;font-size:1.4rem;color:var(--ink3);">×</button>
+    </div>
+    <p class="modal-sub">Simulated payment — no real charge will be made</p>
+    <div class="booking-summary" id="booking-summary-lines"></div>
+    <div class="form-group"><label>Cardholder Name</label><input type="text" placeholder="Jane Smith" id="card-name"/></div>
+    <div class="form-group"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19" id="card-num" oninput="formatCard(this)"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5" id="card-exp"/></div>
+      <div class="form-group"><label>CVV</label><input type="text" placeholder="123" maxlength="3" id="card-cvv"/></div>
+    </div>
+    <button class="btn btn-teal btn-lg" style="width:100%;justify-content:center;" onclick="processPayment()">🔒 Pay & Confirm Booking</button>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+// ===== STATE =====
+const STATE = {
+  user: null,
+  preferences: null,
+  enjoyPrefs: null,
+  selectedDest: null,
+  selectedFlight: null,
+  selectedHotel: null,
+  planFilters: [],
+  bookFlightFilters: [],
+  bookHotelFilters: [],
+  enjoyFilters: [],
+  connectFilters: [],
+  currentPage: 'plan',
+  planRecs: null,
+  bookData: null,
+  bookPlanKey: null,
+  enjoyData: null,
+  enjoyPlanKey: null,
+  connectData: null,
+  recommendedUsers: [],
+  groupData: [],
+  acceptedConnections: [],
+  outgoingRequests: [],
+  bookingRef: null,
+  connections: {},
+  connectionRequests: [],
+  unreadMessages: {},
+  lastMessageUserId: null,
+  socket: null,
+  activeChatUserId: null,
+  activeGroupChatId: null
+};
+
+const AUTH_TOKEN_KEY = 'wanderai_token';
+const APP_STATE_KEY = 'wanderai_state';
+const API_BASE = '';
+
+function buildStateSnapshot(){
+  return {
+    preferences: STATE.preferences,
+    enjoyPrefs: STATE.enjoyPrefs,
+    selectedDest: STATE.selectedDest,
+    selectedFlight: STATE.selectedFlight,
+    selectedHotel: STATE.selectedHotel,
+    planRecs: STATE.planRecs,
+    bookData: STATE.bookData,
+    bookPlanKey: STATE.bookPlanKey,
+    enjoyData: STATE.enjoyData,
+    enjoyPlanKey: STATE.enjoyPlanKey,
+    connectData: STATE.connectData,
+    recommendedUsers: STATE.recommendedUsers,
+    groupData: STATE.groupData,
+    acceptedConnections: STATE.acceptedConnections,
+    outgoingRequests: STATE.outgoingRequests,
+    bookingRef: STATE.bookingRef,
+    connections: STATE.connections,
+    connectionRequests: STATE.connectionRequests,
+    unreadMessages: STATE.unreadMessages,
+    lastMessageUserId: STATE.lastMessageUserId
+  };
+}
+
+function getStateStorageKey(userId){
+  return userId ? `${APP_STATE_KEY}_${userId}` : APP_STATE_KEY;
+}
+
+function getCurrentPlanKey(){
+  if(!STATE.selectedDest || !STATE.preferences) return null;
+  return JSON.stringify({
+    destination: {
+      name: STATE.selectedDest.name,
+      country: STATE.selectedDest.country,
+      emoji: STATE.selectedDest.emoji
+    },
+    preferences: STATE.preferences
+  });
+}
+
+function getCountryFlagCode(country){
+  const countryCodes = {
+    Portugal:'PT', Japan:'JP', Colombia:'CO', Thailand:'TH', 'South Africa':'ZA',
+    Indonesia:'ID', Greece:'GR', 'French Polynesia':'PF', 'United Kingdom':'GB',
+    Morocco:'MA', Iceland:'IS', Mexico:'MX', Croatia:'HR', 'New Zealand':'NZ',
+    Fiji:'FJ',
+    Canada:'CA', Spain:'ES', Italy:'IT', France:'FR', Germany:'DE', Ireland:'IE',
+    Switzerland:'CH', Austria:'AT', Australia:'AU', Vietnam:'VN', Singapore:'SG',
+    Malaysia:'MY', Turkey:'TR', Egypt:'EG', Brazil:'BR', Peru:'PE', Argentina:'AR',
+    Chile:'CL', 'United States':'US', USA:'US', Netherlands:'NL', Belgium:'BE'
+  };
+  return countryCodes[country] || '';
+}
+
+function getPlanVisual(place = {}){
+  const code = getCountryFlagCode(place.country);
+  if(code) return { type:'flag', code };
+  const text = [
+    place.name || '',
+    place.country || '',
+    ...(place.highlights || []),
+    place.whyMatch || ''
+  ].join(' ').toLowerCase();
+  const visualMap = [
+    {pattern: /(beach|island|coast|sea|ocean)/, emoji:'🏖️'},
+    {pattern: /(temple|shrine|palace|castle|old town|historic|cathedral|medina)/, emoji:'🏛️'},
+    {pattern: /(mountain|alps|volcano|hike|trail|summit|fjord)/, emoji:'🏔️'},
+    {pattern: /(food|market|wine|cuisine|street food|coffee)/, emoji:'🍽️'},
+    {pattern: /(art|museum|gallery|design)/, emoji:'🎨'},
+    {pattern: /(nightlife|bar|club|social)/, emoji:'🌃'},
+    {pattern: /(wellness|spa|yoga|retreat)/, emoji:'🧘'},
+    {pattern: /(wildlife|nature|jungle|safari|forest)/, emoji:'🌿'},
+    {pattern: /(desert|dune)/, emoji:'🏜️'},
+    {pattern: /(city|urban|architecture)/, emoji:'🏙️'}
+  ];
+  const match = visualMap.find((item) => item.pattern.test(text));
+  return { type:'emoji', value: match ? match.emoji : '✈️' };
+}
+
+function getPlaceVisualMarkup(place = {}){
+  const visual = getPlanVisual(place);
+  if(visual.type === 'flag'){
+    const src = `https://flagcdn.com/w80/${visual.code.toLowerCase()}.png`;
+    return `<img class="place-flag" src="${src}" alt="${place.country || 'Flag'} flag" loading="lazy"/>`;
+  }
+  return `<span class="place-visual">${visual.value}</span>`;
+}
+
+function getRegionForCountry(country){
+  const regionMap = {
+    Portugal:'Europe', Spain:'Europe', Italy:'Europe', France:'Europe', Germany:'Europe', Ireland:'Europe',
+    Switzerland:'Europe', Austria:'Europe', Greece:'Europe', Croatia:'Europe', Iceland:'Europe', Belgium:'Europe',
+    Netherlands:'Europe', 'United Kingdom':'Europe',
+    Japan:'Asia', Thailand:'Asia', Indonesia:'Asia', Vietnam:'Asia', Singapore:'Asia', Malaysia:'Asia', Nepal:'Asia', Turkey:'Asia',
+    Egypt:'Africa', Morocco:'Africa', 'South Africa':'Africa',
+    Mexico:'North America', Canada:'North America', 'United States':'North America', USA:'North America',
+    Colombia:'South America', Brazil:'South America', Peru:'South America', Argentina:'South America', Chile:'South America',
+    Australia:'Australia', 'New Zealand':'Australia', Fiji:'Australia', 'French Polynesia':'Australia'
+  };
+  return regionMap[country] || '';
+}
+
+function filterPlanRecsByRegion(recs = [], selectedRegions = []){
+  if(!Array.isArray(recs) || !Array.isArray(selectedRegions) || !selectedRegions.length || selectedRegions.includes('Anywhere!')){
+    return recs;
+  }
+  return recs.filter((rec) => selectedRegions.includes(getRegionForCountry(rec.country)));
+}
+
+function applyStateSnapshot(snapshot = {}){
+  Object.assign(STATE, snapshot);
+  if(!STATE.connections) STATE.connections = {};
+  if(!STATE.connectionRequests) STATE.connectionRequests = [];
+  if(!STATE.outgoingRequests) STATE.outgoingRequests = [];
+  if(!STATE.unreadMessages) STATE.unreadMessages = {};
+  if(!STATE.acceptedConnections) STATE.acceptedConnections = [];
+  if(!STATE.recommendedUsers) STATE.recommendedUsers = [];
+  if(!STATE.groupData) STATE.groupData = [];
+  if(!STATE.activeGroupChatId) STATE.activeGroupChatId = null;
+}
+
+function clearUserFlowState(){
+  STATE.preferences = null;
+  STATE.enjoyPrefs = null;
+  STATE.selectedDest = null;
+  STATE.selectedFlight = null;
+  STATE.selectedHotel = null;
+  STATE.planRecs = null;
+  STATE.bookData = null;
+  STATE.bookPlanKey = null;
+  STATE.enjoyData = null;
+  STATE.enjoyPlanKey = null;
+  STATE.connectData = null;
+  STATE.recommendedUsers = [];
+  STATE.groupData = [];
+  STATE.acceptedConnections = [];
+  STATE.outgoingRequests = [];
+  STATE.bookingRef = null;
+  STATE.connections = {};
+  STATE.connectionRequests = [];
+  STATE.unreadMessages = {};
+  STATE.lastMessageUserId = null;
+  STATE.activeChatUserId = null;
+  STATE.activeGroupChatId = null;
+}
+
+function save(){
+  const key = getStateStorageKey(STATE.user?.id);
+  localStorage.setItem(key, JSON.stringify(buildStateSnapshot()));
+}
+
+function load(){
+  try{
+    const d = JSON.parse(localStorage.getItem(APP_STATE_KEY)||'{}');
+    applyStateSnapshot(d);
+  }catch(e){}
+}
+
+function loadUserState(userId){
+  clearUserFlowState();
+  try{
+    const raw = localStorage.getItem(getStateStorageKey(userId));
+    if(raw){
+      applyStateSnapshot(JSON.parse(raw));
+      return;
+    }
+  }catch(e){}
+  save();
+}
+
+// ===== LOCAL OLLAMA API =====
+const OLLAMA_API = API_BASE;
+const OLLAMA_MODEL = 'qwen2.5:1.5b'; // Text model for planning/chat features
+
+function setToken(token){
+  if(token) localStorage.setItem(AUTH_TOKEN_KEY, token);
+  else localStorage.removeItem(AUTH_TOKEN_KEY);
+}
+
+function getToken(){
+  return localStorage.getItem(AUTH_TOKEN_KEY);
+}
+
+async function apiFetch(path, options={}){
+  const headers = {'Content-Type':'application/json', ...(options.headers||{})};
+  const token = getToken();
+  if(token) headers.Authorization = `Bearer ${token}`;
+  const response = await fetch(`${API_BASE}${path}`, {...options, headers});
+  const text = await response.text();
+  const data = text ? JSON.parse(text) : {};
+  if(!response.ok) throw new Error(data.error || `Request failed (${response.status})`);
+  return data;
+}
+
+function normalizeUser(user){
+  if(!user) return null;
+  return {
+    ...user,
+    id: String(user.id),
+    post: user.post || user.bio || `${user.name} is looking for a travel companion.`,
+    interests: Array.isArray(user.interests) ? user.interests : [],
+    type: user.type || 'seeking',
+    isRealUser: true
+  };
+}
+
+function getCompanionById(id){
+  return (STATE.connectData||[]).find(c => String(c.id) === String(id))
+    || (STATE.connectionRequests||[]).find(c => String(c.id) === String(id))
+    || (STATE.outgoingRequests||[]).find(c => String(c.id) === String(id));
+}
+
+async function loadCurrentUser(){
+  const token = getToken();
+  if(!token){
+    STATE.user = null;
+    return;
+  }
+  try{
+    const data = await apiFetch('/api/auth/me', {method:'GET'});
+    STATE.user = normalizeUser(data.user);
+  }catch(e){
+    setToken('');
+    STATE.user = null;
+  }
+}
+
+async function refreshConnections(){
+  if(!STATE.user){
+    STATE.connections = {};
+    STATE.connectionRequests = [];
+    STATE.outgoingRequests = [];
+    STATE.connectData = null;
+    return;
+  }
+  const [usersData, connectionsData] = await Promise.all([
+    apiFetch('/api/users', {method:'GET'}),
+    apiFetch('/api/connections', {method:'GET'})
+  ]);
+  STATE.connectData = (usersData.users||[]).map(normalizeUser);
+  STATE.connectionRequests = (connectionsData.pendingIncoming||[]).map(normalizeUser);
+  STATE.outgoingRequests = (connectionsData.pendingOutgoing||[]).map(normalizeUser);
+  STATE.acceptedConnections = (connectionsData.accepted||[]).map(normalizeUser);
+  STATE.connections = connectionsData.statusMap || {};
+  save();
+}
+
+function setupSocket(){
+  if(!STATE.user || !getToken()){
+    if(STATE.socket){
+      STATE.socket.disconnect();
+      STATE.socket = null;
+    }
+    return;
+  }
+
+  if(STATE.socket){
+    STATE.socket.disconnect();
+  }
+
+  STATE.socket = io({
+    auth: { token: getToken() }
+  });
+
+  STATE.socket.on('connection:request', async ({from}) => {
+    showToast(`${from.name} sent you a connection request.`);
+    await refreshConnections();
+    if(STATE.currentPage === 'connect') renderConnectMain(document.getElementById('connect-content'));
+  });
+
+  STATE.socket.on('connection:accepted', async ({by}) => {
+    showToast(`${by.name} accepted the connection request.`);
+    await refreshConnections();
+    if(STATE.currentPage === 'connect') renderConnectMain(document.getElementById('connect-content'));
+  });
+
+  STATE.socket.on('connection:declined', async () => {
+    await refreshConnections();
+    if(STATE.currentPage === 'connect') renderConnectMain(document.getElementById('connect-content'));
+  });
+
+  STATE.socket.on('message:new', (message) => {
+    if(STATE.activeChatUserId && [String(message.senderId), String(message.receiverId)].includes(String(STATE.activeChatUserId))){
+      appendChatMessage(message);
+    }
+  });
+}
+
+async function callOllama(systemPrompt, userMessage, maxTokens=1500){
+  try {
+    const fullMessage = `${systemPrompt}\n\nUser: ${userMessage}`;
+    const r = await fetch(`${OLLAMA_API}/api/ollama/generate`,{
+      method:'POST', // Ensure method is POST
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model: OLLAMA_MODEL,
+        prompt: fullMessage,
+        stream: false,
+        options: { // Move num_predict inside options
+          num_predict: maxTokens
+        }
+      })
+    });
+    
+    if(!r.ok) throw new Error(`Ollama API error: ${r.status}.`);
+    const data = await r.json();
+    return data.response || '';
+  } catch(e){
+    console.error('Ollama API error:', e);
+    alert(`Error: ${e.message}\n\nCheck if Ollama is running at ${OLLAMA_API}`);
+    throw e;
+  }
+}
+
+async function callOllamaJson(systemPrompt, userMessage, maxTokens=1200){
+  const fullMessage = `${systemPrompt}\n\nUser: ${userMessage}`;
+  const r = await fetch(`${OLLAMA_API}/api/ollama/generate`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model: OLLAMA_MODEL,
+      prompt: fullMessage,
+      format: 'json',
+      stream: false,
+      options: {
+        num_predict: maxTokens,
+        temperature: 0.45
+      }
+    })
+  });
+  if(!r.ok) throw new Error(`Ollama API error: ${r.status}.`);
+  const data = await r.json();
+  return data.response || '';
+}
+
+function getPlanMetaForPlace(name, country, index){
+  const palette = ['#E8F6F4','#FCEFE3','#FBEDE8','#EAF1F8','#F2EAF7'];
+  const fallback = (getFallbackRecs() || []).find((item) => {
+    const sameName = String(item.name || '').toLowerCase() === String(name || '').toLowerCase();
+    const sameCountry = String(item.country || '').toLowerCase() === String(country || '').toLowerCase();
+    return sameName || (sameCountry && !name);
+  });
+  const hoursByContinent = {
+    'North America': 6,
+    'South America': 9,
+    'Europe': 8,
+    'Asia': 15,
+    'Africa': 14,
+    'Australia': 18,
+    'Antarctica': 20
+  };
+  return {
+    emoji: fallback?.emoji || '✈️',
+    bgColor: fallback?.bgColor || palette[index % palette.length],
+    flightFrom: 'NYC',
+    estFlightHours: fallback?.estFlightHours || hoursByContinent[getRegionForCountry(country)] || 10,
+    budgetNote: fallback?.budgetNote || 'Balanced for the preferences in your questionnaire.'
+  };
+}
+
+function normalizePlanRec(rec, index){
+  let name = String(rec?.name || '').trim();
+  let country = String(rec?.country || '').trim();
+  if(name.includes(',') && !country){
+    const parts = name.split(',').map((part) => part.trim()).filter(Boolean);
+    if(parts.length >= 2){
+      name = parts[0];
+      country = parts[parts.length - 1];
+    }
+  }
+  const meta = getPlanMetaForPlace(name, country, index);
+  const bestFor = (Array.isArray(rec?.bestFor) ? rec.bestFor : [])
+    .map((item) => String(item || '').trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  const highlights = (Array.isArray(rec?.highlights) ? rec.highlights : [])
+    .map((item) => String(item || '').trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  const score = Number(rec?.matchScore);
+  return {
+    name,
+    country,
+    emoji: meta.emoji,
+    bgColor: meta.bgColor,
+    whyMatch: String(rec?.whyMatch || 'This destination is a strong fit for your questionnaire.').trim(),
+    bestFor: bestFor.length ? bestFor : ['Adventure', 'Culture', 'Food'],
+    matchScore: Number.isFinite(score) ? Math.max(72, Math.min(98, Math.round(score))) : 84 - (index * 2),
+    flightFrom: 'NYC',
+    estFlightHours: Number.isFinite(Number(rec?.estFlightHours)) ? Number(rec.estFlightHours) : meta.estFlightHours,
+    highlights: highlights.length ? highlights : ['Strong match on vibe', 'Fits your chosen continent'],
+    budgetNote: meta.budgetNote
+  };
+}
+
+function extractPlanRecs(payload){
+  if(Array.isArray(payload)) return payload;
+  if(payload && Array.isArray(payload.travelDestinations)) return payload.travelDestinations;
+  if(payload && Array.isArray(payload.destinations)) return payload.destinations;
+  if(payload && Array.isArray(payload.recommendations)) return payload.recommendations;
+  return [];
+}
+
+function getContinentRuleExamples(selectedRegions = []){
+  const examples = {
+    'North America': 'Canada, United States, Mexico',
+    'South America': 'Colombia, Brazil, Peru, Argentina, Chile, Bolivia',
+    'Europe': 'Portugal, Spain, Italy, France, Croatia, Greece',
+    'Asia': 'Japan, Thailand, Indonesia, Vietnam, Singapore, Nepal',
+    'Africa': 'Morocco, Egypt, South Africa',
+    'Australia': 'Australia, New Zealand, Fiji, French Polynesia',
+    'Antarctica': 'research-base and expedition destinations in Antarctica only'
+  };
+  return selectedRegions
+    .filter((region) => region !== 'Anywhere!')
+    .map((region) => `${region}: ${examples[region] || 'valid destinations only'}`)
+    .join('\n');
+}
+
+// ===== AUTH =====
+function showAuth(){document.getElementById('auth-modal').style.display='flex';}
+function closeAuth(){document.getElementById('auth-modal').style.display='none';}
+function switchAuth(tab){
+  document.getElementById('auth-login').style.display = tab==='login'?'block':'none';
+  document.getElementById('auth-register').style.display = tab==='register'?'block':'none';
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',(tab==='login'&&i===0)||(tab==='register'&&i===1)));
+}
+
+function toggleRegInterest(el, interest){
+  el.classList.toggle('selected');
+}
+
+async function doLogin(){
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  if(!email){alert('Enter your email');return;}
+  try{
+    const data = await apiFetch('/api/auth/login', {
+      method:'POST',
+      body: JSON.stringify({email, password: pass})
+    });
+    setToken(data.token);
+    STATE.user = normalizeUser(data.user);
+    save();
+    setupSocket();
+    await refreshConnections();
+    closeAuth();
+    updateNav();
+    renderPlan();
+    showToast(`Welcome back, ${STATE.user.name}.`);
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+async function doRegister(){
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-pass').value;
+  const location = document.getElementById('reg-location').value.trim()||'Unknown';
+  const destination = document.getElementById('reg-dest').value.trim();
+  const dates = document.getElementById('reg-dates').value.trim();
+  const type = document.getElementById('reg-type').value;
+  const bio = document.getElementById('reg-bio').value.trim();
+  const interests = [...document.querySelectorAll('#reg-interests-grid .chip.selected')].map(el=>el.dataset.interest);
+  if(!name||!email||!pass){alert('Fill in your name, email, and password');return;}
+  try{
+    const data = await apiFetch('/api/auth/register', {
+      method:'POST',
+      body: JSON.stringify({
+        name,
+        email,
+        password: pass,
+        location,
+        destination: destination || 'TBD',
+        dates: dates || 'TBD',
+        type,
+        bio,
+        interests: interests.length>0 ? interests : ['Culture']
+      })
+    });
+    setToken(data.token);
+    STATE.user = normalizeUser(data.user);
+    save();
+    setupSocket();
+    await refreshConnections();
+    closeAuth();
+    updateNav();
+    renderPlan();
+    showToast(`Welcome ${name}! Your profile is now visible to other travelers on the Connect page.`);
+  }catch(e){
+    alert(e.message);
+  }
+}
+
+async function demoLogin(){
+  const seed = Date.now();
+  document.getElementById('reg-name').value = `Explorer ${String(seed).slice(-4)}`;
+  document.getElementById('reg-email').value = `demo-${seed}@wanderai.local`;
+  document.getElementById('reg-pass').value = 'wanderai-demo';
+  document.getElementById('reg-location').value = 'Local Demo';
+  document.getElementById('reg-dest').value = 'Lisbon, Portugal';
+  document.getElementById('reg-dates').value = 'Anytime';
+  switchAuth('register');
+  await doRegister();
+}
+
+function logout(){
+  setToken('');
+  if(STATE.socket){
+    STATE.socket.disconnect();
+    STATE.socket = null;
+  }
+  STATE.user=null; STATE.preferences=null; STATE.enjoyPrefs=null;
+  STATE.selectedDest=null; STATE.selectedFlight=null; STATE.selectedHotel=null;
+  STATE.planRecs=null; STATE.bookData=null; STATE.enjoyData=null; STATE.connectData=null;
+  STATE.connections={}; STATE.connectionRequests=[]; STATE.outgoingRequests=[]; STATE.activeChatUserId=null;
+  save(); updateNav();
+  document.getElementById('tab-book').disabled=true;
+  document.getElementById('tab-enjoy').disabled=true;
+  renderPlan();
+}
+function updateNav(){
+  const r = document.getElementById('nav-right');
+  if(STATE.user){
+    const initials = STATE.user.name.split(' ').map(x=>x[0]).join('').toUpperCase().slice(0,2);
+    r.innerHTML=`<div class="user-badge"><div class="avatar">${initials}</div><span>${STATE.user.name}</span></div><button class="btn btn-outline btn-sm" onclick="logout()">Sign out</button>`;
+  } else {
+    r.innerHTML=`<button class="btn btn-primary btn-sm" onclick="showAuth()">Sign in</button>`;
+  }
+}
+
+// ===== PAGE NAVIGATION =====
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+p).classList.add('active');
+  document.querySelectorAll('.mobile-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('mtab-'+p).classList.add('active');
+  STATE.currentPage = p;
+  if(p==='plan') renderPlan();
+  if(p==='book') renderBook();
+  if(p==='enjoy') renderEnjoy();
+  if(p==='connect') renderConnect();
+}
+
+// ===== PLAN PAGE =====
+let planStep = 0;
+const planQuestions = [
+  {id:'travelStyle',label:'How do you like to travel?',sub:'Choose all that apply',type:'multi',options:['Adventure & Outdoors','Culture & History','Food & Cuisine','Relaxation & Wellness','Nightlife & Social','Art & Architecture','Wildlife & Nature','Shopping & Fashion']},
+  {id:'budget',label:'What\'s your daily budget per person?',type:'range',min:50,max:1000,step:50,unit:'$',default:300},
+  {id:'duration',label:'How long is your trip?',type:'range',min:3,max:30,step:1,unit:' days',default:10},
+  {id:'climate',label:'Preferred climate?',type:'single',options:['Tropical & Warm','Mediterranean','Alpine & Cool','Desert & Dry','Temperate & Mild','Any Climate']},
+  {id:'travelWith',label:'Who are you travelling with?',type:'single',options:['Solo','Partner/Couple','Friends Group','Family with Kids','Family (Adults)']},
+  {id:'region',label:'Which continent interests you most?',sub:'Choose one or more, or leave it open with Anywhere!',type:'multi',options:['Africa','Antarctica','Asia','Australia','Europe','North America','South America','Anywhere!']}
+];
+let planAnswers = {};
+
+function renderPlan(){
+  const el = document.getElementById('plan-content');
+  if(!STATE.user){
+    el.innerHTML = `
+      <div class="hero">
+        <div class="hero-tag">AI-Powered Travel Planning</div>
+        <h1>Your next adventure,<br><em>perfectly planned</em></h1>
+        <p>Roam.ai uses Ollama to build hyper-personalised trip recommendations. Sign in to start planning your dream journey.</p>
+        <div style="display:flex;gap:12px;justify-content:center;margin-top:2rem;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-lg" onclick="showAuth()">Get started free</button>
+          <button class="btn btn-outline btn-lg" onclick="demoLogin()">Try demo</button>
+        </div>
+      </div>
+      <div class="rec-grid" style="margin-top:1rem;opacity:0.4;pointer-events:none;">
+        ${['🗼 Paris','🏯 Kyoto','🏔️ Patagonia','🏝️ Bali'].map(d=>`
+          <div class="rec-card">
+            <div class="rec-img" style="background:var(--sand2)">${d.split(' ')[0]}</div>
+            <div class="rec-body">
+              <div class="rec-name">${d.split(' ').slice(1).join(' ')}</div>
+              <div class="rec-country">Sign in to see why this matches you</div>
+              <div style="height:8px;background:var(--sand2);border-radius:4px;margin:0.75rem 0;"></div>
+              <div style="height:8px;background:var(--sand2);border-radius:4px;width:70%;"></div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+    return;
+  }
+  if(!STATE.preferences){
+    renderPlanQuestions(el);
+  } else {
+    renderPlanRecs(el);
+  }
+}
+
+function renderPlanQuestions(el){
+  planStep = 0; planAnswers = {};
+  el.innerHTML = `
+    <div style="max-width:680px;margin:0 auto;padding-top:2rem;">
+      <div style="text-align:center;margin-bottom:2.5rem;">
+        <div class="hero-tag">Personalisation</div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin:1rem 0 0.5rem;letter-spacing:-0.5px;">Let's find your perfect destination</h2>
+        <p style="color:var(--ink3);">Answer a few quick questions so our AI can build your ideal itinerary</p>
+      </div>
+      <div class="step-counter" id="step-counter"></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+      <div id="q-area"></div>
+      <div style="display:flex;justify-content:space-between;margin-top:2rem;">
+        <button class="btn btn-outline" id="btn-back" onclick="planBack()" style="display:none;">← Back</button>
+        <button class="btn btn-primary" id="btn-next" onclick="planNext()" style="margin-left:auto;">Continue →</button>
+      </div>
+    </div>`;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = planQuestions[planStep];
+  const total = planQuestions.length;
+  document.getElementById('step-counter').textContent = `Step ${planStep+1} of ${total}`;
+  document.getElementById('progress-fill').style.width = `${((planStep+1)/total)*100}%`;
+  document.getElementById('btn-back').style.display = planStep>0?'inline-flex':'none';
+  document.getElementById('btn-next').textContent = planStep===total-1?'Find my destinations ✦':'Continue →';
+  const area = document.getElementById('q-area');
+  if(q.type==='multi'||q.type==='single'){
+    const cur = planAnswers[q.id]||(q.type==='multi'?[]:'');
+    area.innerHTML=`
+      <div class="card q-step">
+        <div class="q-label">${q.label}</div>
+        ${q.sub?`<div class="q-sub">${q.sub}</div>`:''}
+        <div class="chip-grid">
+          ${q.options.map(o=>`
+            <div class="chip ${(q.type==='multi'?(cur||[]).includes(o):(cur===o))?'selected':''}"
+              onclick="selectChip('${q.id}','${o}','${q.type}')" id="chip-${q.id}-${o.replace(/[^a-z0-9]/gi,'_')}">${o}</div>
+          `).join('')}
+        </div>
+      </div>`;
+  } else if(q.type==='range'){
+    const cur = planAnswers[q.id]||q.default;
+    area.innerHTML=`
+      <div class="card q-step">
+        <div class="q-label">${q.label}</div>
+        <div class="range-val" id="range-display-${q.id}">${q.unit==='$'?q.unit:''}${cur}${q.unit!=='$'?q.unit:''}</div>
+        <input type="range" min="${q.min}" max="${q.max}" step="${q.step}" value="${cur}"
+          oninput="updateRange('${q.id}','${q.unit}',this.value)"
+          onchange="planAnswers['${q.id}']=parseInt(this.value)"/>
+        <div class="range-labels"><span>${q.unit==='$'?q.unit:''}${q.min}${q.unit!=='$'?q.unit:''}</span><span>${q.unit==='$'?q.unit:''}${q.max}${q.unit!=='$'?q.unit:''}</span></div>
+      </div>`;
+    planAnswers[q.id] = cur;
+  }
+}
+
+function updateRange(id, unit, val){
+  const d = document.getElementById('range-display-'+id);
+  if(d) d.textContent = (unit==='$'?unit:'')+val+(unit!=='$'?unit:'');
+  planAnswers[id] = parseInt(val);
+}
+
+function selectChip(id, val, type){
+  if(type==='single'){
+    planAnswers[id] = val;
+    document.querySelectorAll(`[id^="chip-${id}-"]`).forEach(c=>c.classList.remove('selected'));
+    const chipId = `chip-${id}-${val.replace(/[^a-z0-9]/gi,'_')}`;
+    const el = document.getElementById(chipId);
+    if(el) el.classList.add('selected');
+  } else {
+    if(!planAnswers[id]) planAnswers[id]=[];
+    if(id === 'region'){
+      if(val === 'Anywhere!'){
+        planAnswers[id] = ['Anywhere!'];
+        document.querySelectorAll(`[id^="chip-${id}-"]`).forEach(c=>c.classList.remove('selected'));
+        const chipId = `chip-${id}-${val.replace(/[^a-z0-9]/gi,'_')}`;
+        const el = document.getElementById(chipId);
+        if(el) el.classList.add('selected');
+        return;
+      }
+      planAnswers[id] = planAnswers[id].filter(option => option !== 'Anywhere!');
+      const anywhereChip = document.getElementById(`chip-${id}-Anywhere_`);
+      if(anywhereChip) anywhereChip.classList.remove('selected');
+    }
+    const idx = planAnswers[id].indexOf(val);
+    if(idx>=0) planAnswers[id].splice(idx,1);
+    else planAnswers[id].push(val);
+    const chipId = `chip-${id}-${val.replace(/[^a-z0-9]/gi,'_')}`;
+    const el = document.getElementById(chipId);
+    if(el) el.classList.toggle('selected', planAnswers[id].includes(val));
+  }
+}
+
+function planBack(){
+  if(planStep>0){planStep--;renderQuestion();}
+}
+
+async function planNext(){
+  const q = planQuestions[planStep];
+  if(q.type==='single'&&!planAnswers[q.id]){
+    alert('Please select an option to continue');return;
+  }
+  if(q.type==='multi'&&(!planAnswers[q.id]||planAnswers[q.id].length===0)){
+    alert('Please select at least one option');return;
+  }
+  if(planStep<planQuestions.length-1){
+    planStep++;renderQuestion();
+  } else {
+    STATE.preferences = planAnswers;
+    save();
+    await generatePlanRecs();
+  }
+}
+
+async function legacy_generatePlanRecs(filters){
+  const el = document.getElementById('plan-content');
+  el.innerHTML = `<div class="loading"><div class="spinner"></div>Ollama is finding your perfect destinations…</div>`;
+  const prefs = STATE.preferences;
+  const filterStr = filters&&filters.length>0?`\nActive filters: ${filters.join(', ')}`:'';
+  const prompt = `You are a world-class travel recommendation AI. Based on these preferences, recommend exactly 5 travel destinations.
+
+User preferences:
+- Travel style: ${JSON.stringify(prefs.travelStyle)}
+- Daily budget per person: $${prefs.budget}
+- Trip duration: ${prefs.duration} days
+- Climate preference: ${prefs.climate}
+- Travelling with: ${prefs.travelWith}
+- Continent preference: ${JSON.stringify(prefs.region)}
+${filterStr}
+
+Important continent rule:
+- If the continent preference is not "Anywhere!", every destination MUST be inside one of the selected continents.
+- Do not include destinations outside the selected continent(s) for variety.
+- Continent mapping must follow this app's geography:
+  North America = Canada, United States, Mexico and nearby North American destinations
+  South America = Colombia, Brazil, Peru, Argentina, Chile and nearby South American destinations
+  Europe = European countries only
+  Asia = Asian countries only
+  Africa = African countries only
+  Australia = Australia, New Zealand and nearby Pacific destinations
+  Antarctica = Antarctic destinations only
+
+Return ONLY a valid JSON array with exactly 5 objects. Each object must have:
+{
+  "name": "City Name",
+  "country": "Country",
+  "emoji": "single relevant emoji",
+  "bgColor": "one of: #E8F4F0, #F4EEE8, #EEE8F4, #E8EEF4, #F4E8EE",
+  "whyMatch": "2 sentences explaining why this matches their preferences",
+  "bestFor": ["tag1","tag2","tag3"],
+  "matchScore": 85,
+  "flightFrom": "NYC",
+  "estFlightHours": 8,
+  "highlights": ["highlight1","highlight2","highlight3"],
+  "budgetNote": "short note on costs"
+}
+
+Return ONLY the JSON array, no other text.`;
+  try {
+    const raw = await callOllama('You are a travel recommendation AI. Always return valid JSON only, no markdown, no explanation.', prompt, 2000);
+    let recs;
+    try {
+      const clean = raw.replace(/```json|```/g,'').trim();
+      recs = JSON.parse(clean);
+    } catch(e){
+      const match = raw.match(/\[[\s\S]*\]/);
+      recs = match ? JSON.parse(match[0]) : legacy_getFallbackRecs();
+    }
+    const regionFiltered = filterPlanRecsByRegion(recs, prefs.region || []);
+    recs = regionFiltered.length ? regionFiltered : legacy_getFallbackRecs();
+    const deduped = [];
+    const seen = new Set();
+    recs.forEach((rec) => {
+      const key = `${rec.name}|${rec.country}`.toLowerCase();
+      if(!seen.has(key) && deduped.length < 5){
+        seen.add(key);
+        deduped.push(rec);
+      }
+    });
+    if(deduped.length < 5){
+      const fallbackExtras = filterPlanRecsByRegion(legacy_getFallbackRecs(), prefs.region || []);
+      fallbackExtras.forEach((rec) => {
+        const key = `${rec.name}|${rec.country}`.toLowerCase();
+        if(!seen.has(key) && deduped.length < 5){
+          seen.add(key);
+          deduped.push(rec);
+        }
+      });
+    }
+    STATE.planRecs = deduped;
+    save();
+    renderPlanRecs(el);
+  } catch(e){
+    STATE.planRecs = filterPlanRecsByRegion(legacy_getFallbackRecs(), prefs.region || []);
+    save();
+    renderPlanRecs(el);
+  }
+}
+
+function legacy_getFallbackRecs(){
+  return [
+    {name:"Lisbon",country:"Portugal",emoji:"🏛️",bgColor:"#F4EEE8",whyMatch:"Lisbon's rich history and vibrant food scene perfectly match your cultural interests and budget.",bestFor:["Culture","Food","Architecture"],matchScore:92,flightFrom:"NYC",estFlightHours:7,highlights:["Belém Tower","Time Out Market","Alfama district"],budgetNote:"Great value for Europe"},
+    {name:"Kyoto",country:"Japan",emoji:"🏯",bgColor:"#E8F4F0",whyMatch:"Ancient temples and world-class cuisine make Kyoto ideal for cultural explorers.",bestFor:["Culture","Food","History"],matchScore:88,flightFrom:"NYC",estFlightHours:14,highlights:["Fushimi Inari","Arashiyama bamboo","Gion district"],budgetNote:"Mid-range budget fits well"},
+    {name:"Medellín",country:"Colombia",emoji:"🌺",bgColor:"#EEE8F4",whyMatch:"Medellín offers incredible transformation stories, great nightlife, and amazing food at low cost.",bestFor:["Adventure","Nightlife","Culture"],matchScore:85,flightFrom:"NYC",estFlightHours:5,highlights:["Comuna 13","Pueblito Paisa","El Poblado"],budgetNote:"Very budget-friendly"},
+    {name:"Chiang Mai",country:"Thailand",emoji:"🐘",bgColor:"#E8EEF4",whyMatch:"Temples, trekking, and incredible street food make Chiang Mai a cultural paradise.",bestFor:["Culture","Nature","Food"],matchScore:87,flightFrom:"NYC",estFlightHours:20,highlights:["Doi Suthep","Night Bazaar","Elephant sanctuaries"],budgetNote:"Excellent value"},
+    {name:"Cape Town",country:"South Africa",emoji:"🌊",bgColor:"#F4E8EE",whyMatch:"Dramatic scenery, diverse culture and cuisine, and incredible wildlife nearby.",bestFor:["Adventure","Nature","Food"],matchScore:83,flightFrom:"NYC",estFlightHours:16,highlights:["Table Mountain","Boulders Beach","Winelands"],budgetNote:"Good value for money"}
+  ];
+}
+
+function renderPlanRecs(el){
+  const recs = STATE.planRecs;
+  if(!Array.isArray(recs) || !recs.length){
+    el.innerHTML = `
+      <div class="card" style="max-width:720px;margin:0 auto;text-align:center;">
+        <h3 style="margin-bottom:0.75rem;">No destinations loaded yet</h3>
+        <p style="color:var(--ink3);line-height:1.7;margin-bottom:1.25rem;">
+          Your questionnaire is saved, but destination cards are not loaded right now.
+        </p>
+        <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+          <button class="btn btn-teal" onclick="generatePlanRecs(STATE.planFilters || [])">Generate destinations</button>
+          <button class="btn btn-outline" onclick="resetPrefs()">Redo questionnaire</button>
+        </div>
+      </div>`;
+    return;
+  }
+  const filterOptions = ['Budget-friendly','Adventure','Culture','Food','Beach','Cities','Off the beaten path','Family-friendly'];
+  el.innerHTML = `
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">
+        <div>
+          <h2>Your destinations, ${STATE.user?.name||'Traveller'}</h2>
+          <p style="color:var(--ink3);font-size:0.9rem;margin-top:4px;">AI-matched to your travel style · <button onclick="resetPrefs()" style="background:none;border:none;color:var(--teal);cursor:pointer;font-size:0.9rem;text-decoration:underline;">Redo questionnaire</button></p>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="generatePlanRecs(STATE.planFilters)">↺ Refresh picks</button>
+      </div>
+      <div class="filter-bar">
+        <span class="filter-label">Filter:</span>
+        ${filterOptions.map(f=>`<div class="filter-chip ${STATE.planFilters.includes(f)?'active':''}" onclick="togglePlanFilter('${f}')">${f}</div>`).join('')}
+      </div>
+    </div>
+    <div class="rec-grid">
+      ${recs.map((r,i)=>`
+        <div class="rec-card" onclick="selectDestination(${i})" style="animation:fadeUp ${0.1+i*0.08}s ease both;">
+          <div class="rec-img" style="background:${r.bgColor||'#E8F4F0'};font-size:4.5rem;">${getPlaceVisualMarkup(r)}</div>
+          <div class="rec-body">
+            <div class="rec-name">${r.name}</div>
+            <div class="rec-country">${r.country} · ~${r.estFlightHours}h from ${r.flightFrom||'your city'}</div>
+            <div class="rec-why">${r.whyMatch}</div>
+            <div class="rec-tags">
+              ${(r.bestFor||[]).map((t,ti)=>`<span class="tag ${ti===0?'tag-teal':ti===1?'tag-amber':'tag-rose'}">${t}</span>`).join('')}
+            </div>
+            <div class="match-score">
+              <span>Match</span>
+              <div class="match-bar"><div class="match-fill" style="width:${r.matchScore||80}%"></div></div>
+              <span>${r.matchScore||80}%</span>
+            </div>
+            <button class="btn btn-teal btn-sm" style="width:100%;justify-content:center;margin-top:1rem;" onclick="event.stopPropagation();selectDestination(${i})">Select & Book →</button>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+function resetPrefs(){
+  STATE.preferences=null;STATE.planRecs=null;STATE.selectedDest=null;
+  STATE.selectedFlight=null;STATE.selectedHotel=null;STATE.bookData=null;
+  STATE.bookPlanKey=null;
+  STATE.enjoyData=null;STATE.enjoyPrefs=null;
+  STATE.enjoyPlanKey=null;
+  document.getElementById('tab-book').disabled=true;
+  document.getElementById('tab-enjoy').disabled=true;
+  save();renderPlan();
+}
+
+function togglePlanFilter(f){
+  const idx = STATE.planFilters.indexOf(f);
+  if(idx>=0) STATE.planFilters.splice(idx,1);
+  else STATE.planFilters.push(f);
+  generatePlanRecs(STATE.planFilters);
+}
+
+function selectDestination(idx){
+  const nextDest = STATE.planRecs[idx];
+  const sameDestination = STATE.selectedDest
+    && STATE.selectedDest.name === nextDest.name
+    && STATE.selectedDest.country === nextDest.country;
+
+  STATE.selectedDest = nextDest;
+
+  if(!sameDestination){
+    STATE.bookData = null;
+    STATE.bookPlanKey = null;
+    STATE.selectedFlight = null;
+    STATE.selectedHotel = null;
+    STATE.enjoyData = null;
+    STATE.enjoyPrefs = null;
+    STATE.enjoyPlanKey = null;
+    STATE.bookingRef = null;
+    document.getElementById('tab-enjoy').disabled = true;
+  }
+  document.getElementById('tab-book').disabled = false;
+  if(STATE.bookingRef){
+    document.getElementById('tab-enjoy').disabled = false;
+  }
+  save();
+  showPage('book');
+}
+
+// ===== BOOK PAGE =====
+async function renderBook(){
+  const el = document.getElementById('book-content');
+  const currentPlanKey = getCurrentPlanKey();
+  if(!STATE.selectedDest){
+    el.innerHTML=`<div style="text-align:center;padding:4rem 2rem;color:var(--ink3);">
+      <div style="font-size:3rem;margin-bottom:1rem;">⊹</div>
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.5rem;">No destination selected</h3>
+      <p>Go to the Plan page and pick a destination first.</p>
+      <button class="btn btn-primary" style="margin-top:1.5rem;" onclick="showPage('plan')">← Go to Plan</button>
+    </div>`;
+    return;
+  }
+  if(STATE.bookData && STATE.bookPlanKey && STATE.bookPlanKey !== currentPlanKey){
+    STATE.bookData = null;
+    STATE.bookPlanKey = null;
+    STATE.selectedFlight = null;
+    STATE.selectedHotel = null;
+  }
+  if(!STATE.bookData){
+    el.innerHTML=`
+      <div class="dest-banner">
+        <div>
+          <h2>${getPlaceVisualMarkup(STATE.selectedDest)} ${STATE.selectedDest.name}, ${STATE.selectedDest.country}</h2>
+          <p>${STATE.preferences?.duration||10} days · ${STATE.preferences?.travelWith||'Solo'} · Budget ~$${STATE.preferences?.budget||300}/day</p>
+        </div>
+        <button class="btn btn-outline" style="color:var(--white);border-color:rgba(255,255,255,0.3);" onclick="showPage('plan')">← Change destination</button>
+      </div>
+      <div class="loading"><div class="spinner"></div>Finding best flights and hotels…</div>`;
+    await generateBookData();
+    return;
+  }
+  renderBookUI(el);
+}
+
+async function generateBookData(){
+  const dest = STATE.selectedDest;
+  const prefs = STATE.preferences||{};
+  const currentPlanKey = getCurrentPlanKey();
+  const prompt = `Generate realistic flight and hotel options for a trip to ${dest.name}, ${dest.country}.
+
+Trip details:
+- Duration: ${prefs.duration||10} days
+- Budget: $${prefs.budget||300}/day per person
+- Travelling: ${prefs.travelWith||'Solo'}
+
+Return ONLY valid JSON with this exact structure:
+{
+  "flights": [
+    {
+      "id": "f1",
+      "airline": "Airline Name",
+      "from": "JFK",
+      "to": "airport code",
+      "departure": "10:30",
+      "arrival": "22:45",
+      "duration": "8h 15m",
+      "stops": 0,
+      "class": "Economy",
+      "price": 650,
+      "tags": ["Nonstop","Best value"]
+    }
+  ],
+  "hotels": [
+    {
+      "id": "h1",
+      "name": "Hotel Name",
+      "stars": 4,
+      "area": "Neighborhood",
+      "pricePerNight": 120,
+      "rating": 4.6,
+      "amenities": ["WiFi","Pool","Breakfast"],
+      "tags": ["City center","Best rated"]
+    }
+  ]
+}
+
+Generate 4 flights (varying: nonstop, 1 stop, different airlines, price range $400-$1800) and 4 hotels (varying: budget to luxury, different areas, $60-$400/night). Return ONLY the JSON.`;
+  try {
+    const raw = await callOllama('You are a travel booking data generator. Return valid JSON only.', prompt, 2000);
+    const clean = raw.replace(/```json|```/g,'').trim();
+    let data;
+    try { data = JSON.parse(clean); }
+    catch(e){ const m=raw.match(/\{[\s\S]*\}/); data=m?JSON.parse(m[0]):getFallbackBookData(); }
+    STATE.bookData = data;
+    STATE.bookPlanKey = currentPlanKey;
+    if(!STATE.selectedFlight && data?.flights?.length) STATE.selectedFlight = data.flights[0];
+    if(!STATE.selectedHotel && data?.hotels?.length) STATE.selectedHotel = data.hotels[0];
+    save();
+    renderBookUI(document.getElementById('book-content'));
+  } catch(e){
+    STATE.bookData = getFallbackBookData();
+    STATE.bookPlanKey = currentPlanKey;
+    if(!STATE.selectedFlight && STATE.bookData?.flights?.length) STATE.selectedFlight = STATE.bookData.flights[0];
+    if(!STATE.selectedHotel && STATE.bookData?.hotels?.length) STATE.selectedHotel = STATE.bookData.hotels[0];
+    save();
+    renderBookUI(document.getElementById('book-content'));
+  }
+}
+
+function getFallbackBookData(){
+  const dest = STATE.selectedDest||{name:'Destination'};
+  return {
+    flights:[
+      {id:'f1',airline:'United Airlines',from:'JFK',to:'LIS',departure:'19:00',arrival:'07:15+1',duration:'7h 15m',stops:0,class:'Economy',price:680,tags:['Nonstop','Best value']},
+      {id:'f2',airline:'TAP Air Portugal',from:'JFK',to:'LIS',departure:'22:30',arrival:'12:45+1',duration:'9h 15m',stops:1,class:'Economy',price:510,tags:['1 Stop','Cheapest']},
+      {id:'f3',airline:'Delta',from:'JFK',to:'LIS',departure:'10:00',arrival:'23:30',duration:'13h 30m',stops:1,class:'Business',price:2100,tags:['1 Stop','Business class']},
+      {id:'f4',airline:'Iberia',from:'JFK',to:'LIS',departure:'17:45',arrival:'09:00+1',duration:'10h 15m',stops:1,class:'Economy',price:580,tags:['1 Stop']}
+    ],
+    hotels:[
+      {id:'h1',name:'The Lumiares',stars:5,area:'Bairro Alto',pricePerNight:280,rating:4.8,amenities:['WiFi','Rooftop bar','Spa','Breakfast'],tags:['Best rated','City center']},
+      {id:'h2',name:'Memmo Alfama',stars:4,area:'Alfama',pricePerNight:180,rating:4.6,amenities:['WiFi','Pool','Bar'],tags:['Great views','Boutique']},
+      {id:'h3',name:'Lisboa Pessoa Hotel',stars:4,area:'Intendente',pricePerNight:120,rating:4.4,amenities:['WiFi','Restaurant','Gym'],tags:['Good value']},
+      {id:'h4',name:'Yes! Lisbon Hostel',stars:3,area:'Baixa',pricePerNight:55,rating:4.5,amenities:['WiFi','Breakfast','Locker'],tags:['Budget-friendly','Most social']}
+    ]
+  };
+}
+
+function renderBookUI(el){
+  const data = STATE.bookData;
+  const dest = STATE.selectedDest;
+  let changed = false;
+  if(data?.flights?.length && !data.flights.find(f => f.id === STATE.selectedFlight?.id)){ STATE.selectedFlight = data.flights[0]; changed = true; }
+  if(data?.hotels?.length && !data.hotels.find(h => h.id === STATE.selectedHotel?.id)){ STATE.selectedHotel = data.hotels[0]; changed = true; }
+  if(changed) save();
+  const flightFilters = ['Nonstop','Budget','Business','Under $600'];
+  const hotelFilters = ['Budget','Boutique','Luxury','Breakfast included','Pool'];
+  const nights = (STATE.preferences?.duration||10)-1;
+  el.innerHTML = `
+    <div class="dest-banner">
+      <div>
+        <h2>${getPlaceVisualMarkup(dest)} ${dest.name}, ${dest.country}</h2>
+        <p>${STATE.preferences?.duration||10} days · ${STATE.preferences?.travelWith||'Solo'} · Budget ~$${STATE.preferences?.budget||300}/day</p>
+      </div>
+      <button class="btn btn-outline" style="color:var(--white);border-color:rgba(255,255,255,0.3);" onclick="showPage('plan')">← Change destination</button>
+    </div>
+
+    <div class="filter-bar" style="margin-bottom:1rem;">
+      <span class="filter-label">Flights:</span>
+      ${flightFilters.map(f=>`<div class="filter-chip ${STATE.bookFlightFilters.includes(f)?'active':''}" onclick="toggleBookFilter('flight','${f}')">${f}</div>`).join('')}
+    </div>
+    <div class="section-title">Flights</div>
+    <div id="flights-list">
+      ${data.flights.map(f=>`
+        <div class="flight-card ${STATE.selectedFlight?.id===f.id?'selected':''}" onclick="selectFlight('${f.id}')">
+          <div class="flight-route">
+            <div class="select-indicator">${STATE.selectedFlight?.id===f.id?'✓':''}</div>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span class="airport-code">${f.from}</span>
+                <span class="flight-arrow">──✈──→</span>
+                <span class="airport-code">${f.to}</span>
+              </div>
+              <div class="flight-meta">${f.airline} · ${f.departure} – ${f.arrival} · ${f.duration} · ${f.stops===0?'Nonstop':f.stops+' stop'} · ${f.class}</div>
+              <div style="display:flex;gap:6px;margin-top:6px;">${(f.tags||[]).map(t=>`<span class="tag tag-teal">${t}</span>`).join('')}</div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div class="price">$${f.price}<small>/person</small></div>
+            ${STATE.selectedFlight?.id===f.id?'<span class="tag tag-teal" style="margin-top:8px;display:inline-block;">Selected ✓</span>':''}
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <div style="margin-top:2rem;">
+      <div class="filter-bar" style="margin-bottom:1rem;">
+        <span class="filter-label">Hotels:</span>
+        ${hotelFilters.map(f=>`<div class="filter-chip ${STATE.bookHotelFilters.includes(f)?'active':''}" onclick="toggleBookFilter('hotel','${f}')">${f}</div>`).join('')}
+      </div>
+      <div class="section-title">Hotels</div>
+      <div id="hotels-list">
+        ${data.hotels.map(h=>`
+          <div class="hotel-card ${STATE.selectedHotel?.id===h.id?'selected':''}" onclick="selectHotel('${h.id}')">
+            <div class="flight-route" style="flex:1;">
+              <div class="select-indicator">${STATE.selectedHotel?.id===h.id?'✓':''}</div>
+              <div>
+                <div class="hotel-name">${h.name}</div>
+                <div class="stars">${'★'.repeat(h.stars)}</div>
+                <div class="hotel-meta">${h.area} · ⭐ ${h.rating}/5</div>
+                <div style="margin-top:8px;">${(h.amenities||[]).map(a=>`<span class="amenity-pill">${a}</span>`).join('')}</div>
+                <div style="display:flex;gap:6px;margin-top:8px;">${(h.tags||[]).map(t=>`<span class="tag tag-amber">${t}</span>`).join('')}</div>
+              </div>
+            </div>
+            <div style="text-align:right;flex-shrink:0;">
+              <div class="price">$${h.pricePerNight}<small>/night</small></div>
+              <div style="font-size:0.8rem;color:var(--ink3);margin-top:4px;">$${h.pricePerNight*nights} total (${nights}n)</div>
+              ${STATE.selectedHotel?.id===h.id?'<span class="tag tag-teal" style="margin-top:8px;display:inline-block;">Selected ✓</span>':''}
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    ${STATE.selectedFlight&&STATE.selectedHotel?`
+    <div class="card" style="margin-top:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;background:var(--ink);color:var(--white);border-color:var(--ink);">
+      <div>
+        <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;">Ready to book</div>
+        <div style="font-size:0.88rem;opacity:0.7;margin-top:4px;">
+          ✈ ${STATE.selectedFlight.airline} · 🏨 ${STATE.selectedHotel.name}
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+        <div style="text-align:right;">
+          <div style="font-size:0.8rem;opacity:0.6;">Estimated total</div>
+          <div style="font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;">$${STATE.selectedFlight.price + STATE.selectedHotel.pricePerNight*nights}</div>
+        </div>
+        <button class="btn btn-teal btn-lg" onclick="openPayment()">Confirm & Pay →</button>
+      </div>
+    </div>`:`
+    <div style="text-align:center;padding:2rem;color:var(--ink3);font-size:0.9rem;">
+      Select a flight and hotel above to continue
+    </div>`}`;
+}
+
+function selectFlight(id){
+  STATE.selectedFlight = STATE.bookData.flights.find(f=>f.id===id);
+  save(); renderBookUI(document.getElementById('book-content'));
+}
+
+function selectHotel(id){
+  STATE.selectedHotel = STATE.bookData.hotels.find(h=>h.id===id);
+  save(); renderBookUI(document.getElementById('book-content'));
+}
+
+function toggleBookFilter(type, f){
+  const key = type==='flight'?'bookFlightFilters':'bookHotelFilters';
+  const idx = STATE[key].indexOf(f);
+  if(idx>=0) STATE[key].splice(idx,1);
+  else STATE[key].push(f);
+  renderBookUI(document.getElementById('book-content'));
+}
+
+// ===== PAYMENT =====
+function openPayment(){
+  const nights = (STATE.preferences?.duration||10)-1;
+  const flight = STATE.selectedFlight;
+  const hotel = STATE.selectedHotel;
+  const flightTotal = flight.price;
+  const hotelTotal = hotel.pricePerNight * nights;
+  const total = flightTotal + hotelTotal;
+  document.getElementById('booking-summary-lines').innerHTML=`
+    <div class="line"><span>✈ ${flight.airline} (${flight.from}→${flight.to})</span><span>$${flightTotal}</span></div>
+    <div class="line"><span>🏨 ${hotel.name} (${nights} nights)</span><span>$${hotelTotal}</span></div>
+    <div class="line total"><span>Total</span><span>$${total}</span></div>`;
+  document.getElementById('payment-modal').style.display='flex';
+}
+
+function closePayment(){
+  document.getElementById('payment-modal').style.display='none';
+  document.getElementById('payment-modal-inner').innerHTML = getPaymentForm();
+}
+
+function getPaymentForm(){
+  return `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.25rem;">
+      <h3>Complete Booking</h3>
+      <button onclick="closePayment()" style="background:none;border:none;cursor:pointer;font-size:1.4rem;color:var(--ink3);">×</button>
+    </div>
+    <p class="modal-sub">Simulated payment — no real charge will be made</p>
+    <div class="booking-summary" id="booking-summary-lines"></div>
+    <div class="form-group"><label>Cardholder Name</label><input type="text" placeholder="Jane Smith" id="card-name"/></div>
+    <div class="form-group"><label>Card Number</label><input type="text" placeholder="4242 4242 4242 4242" maxlength="19" id="card-num" oninput="formatCard(this)"/></div>
+    <div class="form-row">
+      <div class="form-group"><label>Expiry</label><input type="text" placeholder="MM/YY" maxlength="5" id="card-exp"/></div>
+      <div class="form-group"><label>CVV</label><input type="text" placeholder="123" maxlength="3" id="card-cvv"/></div>
+    </div>
+    <button class="btn btn-teal btn-lg" style="width:100%;justify-content:center;" onclick="processPayment()">🔒 Pay & Confirm Booking</button>`;
+}
+
+function formatCard(input){
+  let v = input.value.replace(/\s+/g,'').replace(/[^0-9]/gi,'');
+  let matches = v.match(/\d{4,16}/g);
+  let match = (matches&&matches[0])||'';
+  let parts = [];
+  for(let i=0,len=match.length;i<len;i+=4){parts.push(match.substring(i,i+4));}
+  input.value = parts.length?parts.join(' '):input.value;
+}
+
+async function processPayment(){
+  const name = document.getElementById('card-name')?.value;
+  const num = document.getElementById('card-num')?.value;
+  if(!name||!num){alert('Please fill in payment details');return;}
+  const btn = document.querySelector('#payment-modal-inner .btn-teal');
+  if(btn){btn.disabled=true;btn.textContent='Processing…';}
+  await new Promise(r=>setTimeout(r,2200));
+  const ref = 'WA'+Math.random().toString(36).toUpperCase().slice(2,8);
+  STATE.bookingRef = ref;
+  document.getElementById('tab-enjoy').disabled=false;
+  save();
+  document.getElementById('payment-modal-inner').innerHTML=`
+    <div class="confirmed">
+      <div class="tick">✓</div>
+      <h3>Booking Confirmed!</h3>
+      <p style="color:var(--ink3);margin-bottom:1rem;">Your trip to ${STATE.selectedDest.name} is all set.</p>
+      <div class="ref-code">${ref}</div>
+      <p style="font-size:0.82rem;color:var(--ink3);margin-bottom:1.5rem;">Save this reference number</p>
+      <button class="btn btn-teal btn-lg" onclick="closePayment();showPage('enjoy')">Go to Enjoy page →</button>
+    </div>`;
+}
+
+// ===== ENJOY PAGE =====
+let enjoyStep = 0;
+const enjoyQuestions = [
+  {id:'pace',label:'What\'s your ideal day like?',type:'single',options:['Packed full of activities','Balanced mix','Relaxed & spontaneous','Mostly chill with 1-2 things']},
+  {id:'interests',label:'What activities excite you most?',sub:'Choose all that apply',type:'multi',options:['Historical sites & museums','Street food & restaurants','Outdoor & nature hikes','Shopping & markets','Nightlife & bars','Live music & events','Cooking classes','Day trips & excursions','Wellness & spas']},
+  {id:'timeOfDay',label:'When do you prefer to be active?',type:'single',options:['Early bird (6am–noon)','Afternoon explorer (noon–6pm)','Night owl (6pm–late)','All day everything']}
+];
+let enjoyAnswers = {};
+
+function renderEnjoy(){
+  const el = document.getElementById('enjoy-content');
+  const currentPlanKey = getCurrentPlanKey();
+  if(!STATE.bookingRef){
+    el.innerHTML=`<div style="text-align:center;padding:4rem 2rem;color:var(--ink3);">
+      <div style="font-size:3rem;margin-bottom:1rem;">◈</div>
+      <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.5rem;">Complete your booking first</h3>
+      <p>Book flights and hotels to unlock your activity planner.</p>
+      <button class="btn btn-primary" style="margin-top:1.5rem;" onclick="showPage('book')">← Go to Book</button>
+    </div>`;
+    return;
+  }
+  if(STATE.enjoyData && STATE.enjoyPlanKey && STATE.enjoyPlanKey !== currentPlanKey){
+    STATE.enjoyPrefs = null;
+    STATE.enjoyData = null;
+    STATE.enjoyPlanKey = null;
+    save();
+  }
+  if(!STATE.enjoyPrefs){
+    renderEnjoyQuestions(el);
+  } else {
+    renderEnjoyMain(el);
+  }
+}
+
+function renderEnjoyQuestions(el){
+  enjoyStep=0; enjoyAnswers={};
+  el.innerHTML=`
+    <div style="max-width:680px;margin:0 auto;padding-top:2rem;">
+      <div style="text-align:center;margin-bottom:2.5rem;">
+        <div class="hero-tag">Activity Planner</div>
+        <h2 style="font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;margin:1rem 0 0.5rem;letter-spacing:-0.5px;">Plan your days in ${STATE.selectedDest?.name}</h2>
+        <p style="color:var(--ink3);">Tell us what you love and we'll build the perfect activity list</p>
+      </div>
+      <div class="step-counter" id="e-step-counter"></div>
+      <div class="progress-bar"><div class="progress-fill" id="e-progress-fill" style="width:0%"></div></div>
+      <div id="eq-area"></div>
+      <div style="display:flex;justify-content:space-between;margin-top:2rem;">
+        <button class="btn btn-outline" id="e-btn-back" onclick="enjoyBack()" style="display:none;">← Back</button>
+        <button class="btn btn-primary" id="e-btn-next" onclick="enjoyNext()" style="margin-left:auto;">Continue →</button>
+      </div>
+    </div>`;
+  renderEnjoyQuestion();
+}
+
+function renderEnjoyQuestion(){
+  const q = enjoyQuestions[enjoyStep];
+  const total = enjoyQuestions.length;
+  if(enjoyAnswers[q.id] === undefined){
+    enjoyAnswers[q.id] = q.type === 'multi' ? [q.options[0]] : q.options[0];
+  }
+  document.getElementById('e-step-counter').textContent=`Step ${enjoyStep+1} of ${total}`;
+  document.getElementById('e-progress-fill').style.width=`${((enjoyStep+1)/total)*100}%`;
+  document.getElementById('e-btn-back').style.display=enjoyStep>0?'inline-flex':'none';
+  document.getElementById('e-btn-next').textContent=enjoyStep===total-1?'Build my itinerary ✦':'Continue →';
+  const area=document.getElementById('eq-area');
+  const cur=enjoyAnswers[q.id]||(q.type==='multi'?[]:'');
+  area.innerHTML=`
+    <div class="card q-step">
+      <div class="q-label">${q.label}</div>
+      ${q.sub?`<div class="q-sub">${q.sub}</div>`:''}
+      <div class="chip-grid">
+        ${q.options.map(o=>`
+          <div class="chip ${(q.type==='multi'?(cur||[]).includes(o):(cur===o))?'selected':''}"
+            onclick="selectEnjoyChip('${q.id}','${o}','${q.type}')" id="echip-${q.id}-${o.replace(/[^a-z0-9]/gi,'_')}">${o}</div>
+        `).join('')}
+      </div>
+    </div>`;
+}
+
+function selectEnjoyChip(id,val,type){
+  if(type==='single'){
+    enjoyAnswers[id]=val;
+    document.querySelectorAll(`[id^="echip-${id}-"]`).forEach(c=>c.classList.remove('selected'));
+    const el=document.getElementById(`echip-${id}-${val.replace(/[^a-z0-9]/gi,'_')}`);
+    if(el)el.classList.add('selected');
+  } else {
+    if(!enjoyAnswers[id])enjoyAnswers[id]=[];
+    const idx=enjoyAnswers[id].indexOf(val);
+    if(idx>=0)enjoyAnswers[id].splice(idx,1);
+    else enjoyAnswers[id].push(val);
+    const el=document.getElementById(`echip-${id}-${val.replace(/[^a-z0-9]/gi,'_')}`);
+    if(el)el.classList.toggle('selected',enjoyAnswers[id].includes(val));
+  }
+}
+
+function enjoyBack(){if(enjoyStep>0){enjoyStep--;renderEnjoyQuestion();}}
+
+async function enjoyNext(){
+  const q=enjoyQuestions[enjoyStep];
+  if(q.type==='single'&&!enjoyAnswers[q.id]){alert('Please select an option');return;}
+  if(q.type==='multi'&&(!enjoyAnswers[q.id]||enjoyAnswers[q.id].length===0)){alert('Please select at least one option');return;}
+  if(enjoyStep<enjoyQuestions.length-1){enjoyStep++;renderEnjoyQuestion();}
+  else {
+    STATE.enjoyPrefs=enjoyAnswers;save();
+    await generateEnjoyData();
+  }
+}
+
+async function generateEnjoyData(filters){
+  const el=document.getElementById('enjoy-content');
+  el.innerHTML=`<div class="loading"><div class="spinner"></div>Building your activity list for ${STATE.selectedDest?.name}…</div>`;
+  const dest=STATE.selectedDest||{name:'your destination'};
+  const prefs=STATE.enjoyPrefs||{};
+  const currentPlanKey = getCurrentPlanKey();
+  const filterStr=filters&&filters.length>0?`\nActive filters: ${filters.join(', ')}`:'';
+  const prompt=`Generate exactly 8 activities for a trip to ${dest.name}, ${dest.country}.
+
+Visitor preferences:
+- Travel pace: ${prefs.pace||'Balanced'}
+- Interests: ${JSON.stringify(prefs.interests||[])}
+- Active time: ${prefs.timeOfDay||'All day'}
+${filterStr}
+
+Return ONLY valid JSON array with exactly 8 activity objects:
+[{
+  "name": "Activity name",
+  "emoji": "single emoji",
+  "category": "one of: Culture, Food, Nature, Nightlife, Shopping, Wellness, Adventure, Day Trip",
+  "duration": "e.g. 2-3 hours",
+  "cost": "Free / $10-20 / $30-50 / $50+",
+  "timeOfDay": "Morning / Afternoon / Evening / Anytime",
+  "description": "2 sentences about this activity and why it's great",
+  "tips": "One insider tip",
+  "indoor": true
+}]
+
+Return ONLY the JSON array.`;
+  try {
+    const raw=await callOllama('You are a travel activities expert. Return valid JSON only.', prompt, 2500);
+    const clean=raw.replace(/```json|```/g,'').trim();
+    let acts;
+    try{acts=JSON.parse(clean);}
+    catch(e){const m=raw.match(/\[[\s\S]*\]/);acts=m?JSON.parse(m[0]):getFallbackActivities();}
+    STATE.enjoyData=acts;STATE.enjoyPlanKey=currentPlanKey;save();renderEnjoyMain(el);
+  } catch(e){
+    STATE.enjoyData=getFallbackActivities();STATE.enjoyPlanKey=currentPlanKey;save();renderEnjoyMain(el);
+  }
+}
+
+function getFallbackActivities(){
+  return [
+    {name:"Historic Old Town Walk",emoji:"🏛️",category:"Culture",duration:"3-4 hours",cost:"Free",timeOfDay:"Morning",description:"Wander the cobblestoned streets of the historic center, stopping at iconic landmarks and hidden squares. The best way to understand the city's soul.",tips:"Start early before the crowds arrive.",indoor:false},
+    {name:"Local Food Market",emoji:"🥘",category:"Food",duration:"2 hours",cost:"$10-20",timeOfDay:"Morning",description:"Explore the vibrant local market, sampling cheeses, cured meats, fresh pastries and exotic spices. A paradise for food lovers.",tips:"Go hungry and eat as you browse.",indoor:false},
+    {name:"Panoramic Viewpoint",emoji:"🌄",category:"Culture",duration:"1-2 hours",cost:"Free",timeOfDay:"Afternoon",description:"Climb to the city's most famous viewpoint for sweeping panoramic views over the rooftops and coastline. Perfect for photos.",tips:"Visit at golden hour for magical light.",indoor:false},
+    {name:"Contemporary Art Museum",emoji:"🎨",category:"Culture",duration:"2-3 hours",cost:"$10-20",timeOfDay:"Afternoon",description:"Discover a world-class collection of contemporary and modern art in a beautifully restored building.",tips:"Free entry on the first Sunday of each month.",indoor:true},
+    {name:"Sunset River Cruise",emoji:"⛵",category:"Nature",duration:"2 hours",cost:"$30-50",timeOfDay:"Evening",description:"Glide along the river as the sun sets, taking in the city's skyline from the water with a glass of local wine.",tips:"Book ahead — sunset slots sell out fast.",indoor:false},
+    {name:"Rooftop Bar Hopping",emoji:"🍸",category:"Nightlife",duration:"3-4 hours",cost:"$30-50",timeOfDay:"Evening",description:"The city's rooftop bar scene is legendary. Hop between the best spots for cocktails with jaw-dropping city views.",tips:"Dress smart — some bars have dress codes.",indoor:false},
+    {name:"Day Trip to the Coast",emoji:"🏖️",category:"Day Trip",duration:"Full day",cost:"$30-50",timeOfDay:"Morning",description:"Take a short train or bus ride to stunning coastal towns with beautiful beaches, fresh seafood, and charming architecture.",tips:"Catch the early train to beat the day-trippers.",indoor:false},
+    {name:"Cooking Class",emoji:"👨‍🍳",category:"Food",duration:"3 hours",cost:"$50+",timeOfDay:"Morning",description:"Learn to cook the country's iconic dishes with a local chef in a traditional kitchen. Take home recipes and skills.",tips:"Book 3+ days in advance — classes fill up.",indoor:true}
+  ];
+}
+
+function renderEnjoyMain(el){
+  const acts=STATE.enjoyData;
+  const dest=STATE.selectedDest;
+  const filterOptions=['Free','Under $30','Indoor','Outdoor','Morning','Evening','Culture','Food','Adventure'];
+  const nights=(STATE.preferences?.duration||10)-1;
+  el.innerHTML=`
+    <div class="trip-summary-banner">
+      <div>
+        <div class="trip-sum-item">Destination</div>
+        <div class="trip-sum-val">${getPlaceVisualMarkup(dest)} ${dest.name}, ${dest.country}</div>
+      </div>
+      <div>
+        <div class="trip-sum-item">Flight</div>
+        <div class="trip-sum-val">${STATE.selectedFlight?.airline||'—'}</div>
+      </div>
+      <div>
+        <div class="trip-sum-item">Hotel</div>
+        <div class="trip-sum-val">${STATE.selectedHotel?.name||'—'}</div>
+      </div>
+      <div>
+        <div class="trip-sum-item">Duration</div>
+        <div class="trip-sum-val">${nights+1} days</div>
+      </div>
+      <div>
+        <div class="trip-sum-item">Booking Ref</div>
+        <div class="trip-sum-val" style="color:var(--teal2);">${STATE.bookingRef||'—'}</div>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-bottom:1rem;">
+      <div>
+        <h2>Your activities</h2>
+        <p style="color:var(--ink3);font-size:0.9rem;margin-top:4px;">AI-curated for you · <button onclick="resetEnjoy()" style="background:none;border:none;color:var(--teal);cursor:pointer;font-size:0.9rem;text-decoration:underline;">Redo preferences</button></p>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="generateEnjoyData(STATE.enjoyFilters)">↺ Refresh activities</button>
+    </div>
+    <div class="filter-bar">
+      <span class="filter-label">Filter:</span>
+      ${filterOptions.map(f=>`<div class="filter-chip ${STATE.enjoyFilters.includes(f)?'active':''}" onclick="toggleEnjoyFilter('${f}')">${f}</div>`).join('')}
+    </div>
+    <div class="activity-grid">
+      ${acts.map((a,i)=>`
+        <div class="activity-card" style="animation:fadeUp ${0.1+i*0.07}s ease both;">
+          <div class="activity-icon">${a.emoji}</div>
+          <div class="activity-name">${a.name}</div>
+          <div class="activity-meta">⏱ ${a.duration} · 💰 ${a.cost} · 🕐 ${a.timeOfDay}</div>
+          <p style="font-size:0.85rem;color:var(--ink2);line-height:1.6;margin-bottom:0.75rem;">${a.description}</p>
+          <div style="font-size:0.82rem;background:var(--amber3);color:var(--amber);padding:8px 12px;border-radius:var(--radius-sm);margin-bottom:0.75rem;">💡 ${a.tips}</div>
+          <div class="activity-badges">
+            <span class="tag tag-teal">${a.category}</span>
+            <span class="tag tag-amber">${a.indoor?'Indoor':'Outdoor'}</span>
+          </div>
+        </div>`).join('')}
+    </div>
+
+    <!-- IMAGE TRANSLATE SECTION -->
+    <div style="margin-top:3rem;">
+      <div class="section-head">
+        <h2>Translate anything</h2>
+      </div>
+      <p style="color:var(--ink3);margin-bottom:1.5rem;font-size:0.95rem;">Snap a photo of a menu, sign, or document — Ollama will read and translate it to English for you.</p>
+      <div class="translate-zone" id="translate-zone" onclick="document.getElementById('img-upload').click()">
+        <div style="font-size:3rem;margin-bottom:0.5rem;">📷</div>
+        <strong style="font-family:'Syne',sans-serif;font-size:1rem;">Upload or take a photo</strong>
+        <p>Tap to select an image · or drag and drop here</p>
+        <p style="font-size:0.8rem;margin-top:0.5rem;opacity:0.6;">Supports JPG, PNG, WebP · Menus, signs, documents, labels</p>
+      </div>
+      <input type="file" id="img-upload" accept="image/*" capture="environment" style="display:none;" onchange="handleImageUpload(this)"/>
+      <div id="translate-result"></div>
+    </div>
+  `;
+
+  // Drag and drop
+  const zone = document.getElementById('translate-zone');
+  zone.addEventListener('dragover', e=>{e.preventDefault();zone.classList.add('drag-over');});
+  zone.addEventListener('dragleave', ()=>zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e=>{
+    e.preventDefault();zone.classList.remove('drag-over');
+    const file=e.dataTransfer.files[0];
+    if(file)processImageFile(file);
+  });
+}
+
+function resetEnjoy(){
+  STATE.enjoyPrefs=null;STATE.enjoyData=null;save();renderEnjoy();
+}
+
+function toggleEnjoyFilter(f){
+  const idx=STATE.enjoyFilters.indexOf(f);
+  if(idx>=0)STATE.enjoyFilters.splice(idx,1);
+  else STATE.enjoyFilters.push(f);
+  generateEnjoyData(STATE.enjoyFilters);
+}
+
+// ===== CONNECT PAGE =====
+function renderConnect(){
+  const el = document.getElementById('connect-content');
+  if(!STATE.user){
+    el.innerHTML = `
+      <div class="hero">
+        <div class="hero-tag">Travel Companions</div>
+        <h1>Find your perfect<br><em>travel buddy</em></h1>
+        <p>Connect with fellow travelers worldwide. Post requests for companionship or offer to join others on their adventures.</p>
+        <div style="display:flex;gap:12px;justify-content:center;margin-top:2rem;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-lg" onclick="showAuth()">Sign in to connect</button>
+          <button class="btn btn-outline btn-lg" onclick="demoLogin()">Try demo</button>
+        </div>
+      </div>`;
+    return;
+  }
+  if(!STATE.connectData){
+    generateConnectData();
+  } else {
+    renderConnectMain(el);
+  }
+}
+
+function generateConnectData(){
+  STATE.connectData = [
+    {id: 'c1', name: 'Sarah M.', age: 28, location: 'New York, USA', destination: 'Paris, France', dates: 'June 15-25', type: 'seeking', post: 'Looking for a female travel companion for a 10-day trip to Paris. Love art, food, and museums. Budget traveler, prefer hostels.', interests: ['Culture', 'Food', 'Art'], matchScore: 92},
+    {id: 'c2', name: 'Alex K.', age: 32, location: 'London, UK', destination: 'Tokyo, Japan', dates: 'July 5-15', type: 'offering', post: 'Experienced traveler offering to join groups in Tokyo. Know all the best spots, speak some Japanese. Great with photography!', interests: ['Culture', 'Food', 'Photography'], matchScore: 88},
+    {id: 'c3', name: 'Maria L.', age: 25, location: 'Barcelona, Spain', destination: 'Rio de Janeiro, Brazil', dates: 'August 10-20', type: 'seeking', post: 'Seeking adventure buddy for Rio! Into hiking, beaches, and nightlife. First time in South America, excited to explore.', interests: ['Adventure', 'Nature', 'Nightlife'], matchScore: 85},
+    {id: 'c4', name: 'David R.', age: 30, location: 'Sydney, Australia', destination: 'Bali, Indonesia', dates: 'September 1-10', type: 'offering', post: 'Join me in Bali for surfing, yoga, and island hopping. I have a scooter and know the best hidden beaches.', interests: ['Adventure', 'Wellness', 'Nature'], matchScore: 78},
+    {id: 'c5', name: 'Emma T.', age: 27, location: 'Toronto, Canada', destination: 'Amsterdam, Netherlands', dates: 'May 20-30', type: 'seeking', post: 'Looking for someone to explore Amsterdam with. Love biking, canals, and coffee shops. Easygoing and fun!', interests: ['Culture', 'Food', 'Relaxation'], matchScore: 90}
+  ];
+  save();
+  renderConnectMain(document.getElementById('connect-content'));
+}
+
+function renderConnectMain(el){
+  const pending = STATE.connectionRequests || [];
+  const inboxHtml = pending.length > 0 ? `
+    <div class="inbox-banner">
+      <div>
+        <h4>🔔 Connection Requests (${pending.length})</h4>
+        <p>Accept a request to start messaging</p>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="toggleInbox()">View Requests</button>
+    </div>
+    <div id="inbox-panel" style="display:none;margin-bottom:1.5rem;">
+      ${pending.map(r=>`
+        <div class="inbox-request" id="inbox-${r.id}">
+          <div class="inbox-request-info">
+            <strong>${r.name}</strong>
+            <p>${r.destination} · "${r.post.slice(0,60)}…"</p>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-teal btn-sm" onclick="acceptRequest('${r.id}')">✓ Accept</button>
+            <button class="btn btn-outline btn-sm" onclick="declineRequest('${r.id}')">✗ Decline</button>
+          </div>
+        </div>`).join('')}
+    </div>` : '';
+
+  // Load real registered users (excluding current user)
+  const allUsers = loadAllUsers().filter(u => u.email !== (STATE.user||{}).email && u.isRealUser);
+  const realUserCards = allUsers.map(u => buildCompanionCard(u)).join('');
+  const hasSeedData = (STATE.connectData||[]).length > 0;
+  const seedCards = hasSeedData ? STATE.connectData.map(c => buildCompanionCard(c)).join('') : '';
+
+  const realSection = allUsers.length > 0 ? `
+    <div style="margin-bottom:1.5rem;">
+      <div class="section-title" style="font-size:0.9rem;color:var(--teal);font-family:'Syne',sans-serif;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+        <span style="background:var(--teal3);color:var(--teal);padding:3px 10px;border-radius:100px;font-size:0.75rem;">● LIVE</span>
+        Real Travelers (${allUsers.length})
+        <span style="flex:1;height:1px;background:var(--sand2);display:block;"></span>
+      </div>
+      <div class="rec-grid" id="connect-grid-real">${realUserCards}</div>
+    </div>` : `
+    <div style="background:var(--teal3);border:1px dashed var(--teal);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:0.88rem;color:var(--teal);">
+      <strong style="font-family:'Syne',sans-serif;">No real travelers yet</strong> — Be the first! Create an account and your profile will appear here for others to connect with.
+    </div>`;
+
+  const seedSection = hasSeedData ? `
+    <div>
+      <div style="font-size:0.9rem;color:var(--ink3);font-family:'Syne',sans-serif;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:1rem;">
+        <span style="background:var(--sand2);color:var(--ink3);padding:3px 10px;border-radius:100px;font-size:0.75rem;">DEMO</span>
+        Sample Travelers
+        <span style="flex:1;height:1px;background:var(--sand2);display:block;"></span>
+      </div>
+      <div class="rec-grid" id="connect-grid">${seedCards}</div>
+    </div>` : '';
+
+  el.innerHTML = `
+    <div style="margin-bottom:2rem;">
+      <div class="section-head">
+        <div>
+          <h2>Travel Companions</h2>
+          <p style="color:var(--ink3);font-size:0.9rem;margin-top:4px;">Send a connection request to start chatting</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openPostModal()">+ Post Request</button>
+      </div>
+      ${inboxHtml}
+      <div style="display:flex;gap:12px;margin-bottom:1rem;">
+        <input type="text" id="connect-search" placeholder="Search destinations, names..." style="flex:1;padding:10px;border:1px solid var(--sand2);border-radius:var(--radius-sm);" oninput="filterConnect()"/>
+      </div>
+      <div class="filter-bar">
+        <span class="filter-label">Filter:</span>
+        <div class="filter-chip ${STATE.connectFilters.includes('Seeking Companions')?'active':''}" onclick="toggleConnectFilter('Seeking Companions')">Seeking Companions</div>
+        <div class="filter-chip ${STATE.connectFilters.includes('Offering to Join')?'active':''}" onclick="toggleConnectFilter('Offering to Join')">Offering to Join</div>
+        <div class="filter-chip ${STATE.connectFilters.includes('Culture')?'active':''}" onclick="toggleConnectFilter('Culture')">Culture</div>
+        <div class="filter-chip ${STATE.connectFilters.includes('Adventure')?'active':''}" onclick="toggleConnectFilter('Adventure')">Adventure</div>
+        <div class="filter-chip ${STATE.connectFilters.includes('Food')?'active':''}" onclick="toggleConnectFilter('Food')">Food</div>
+        <div class="filter-chip ${STATE.connectFilters.includes('Nature')?'active':''}" onclick="toggleConnectFilter('Nature')">Nature</div>
+      </div>
+    </div>
+    ${realSection}
+    ${seedSection}`;
+  filterConnect();
+}
+
+function buildCompanionCard(c){
+  const status = (STATE.connections||{})[c.id];
+  const emoji = c.type === 'offering' ? '🤝' : '🔍';
+  const bg = c.type === 'offering' ? '#F4EEE8' : '#E8F4F0';
+  const tagClass = c.type === 'offering' ? 'tag-amber' : 'tag-teal';
+  const tagLabel = c.type === 'offering' ? 'Offering' : 'Seeking';
+  const interestTags = (c.interests||[]).map(i=>`<span class="tag tag-rose">${i}</span>`).join('');
+  const connectedBadge = status === 'connected' ? `<div class="connected-badge">✓ Connected</div>` : '';
+  const realBadge = c.isRealUser ? `<div style="display:inline-flex;align-items:center;gap:4px;background:var(--teal);color:var(--white);font-size:0.7rem;font-weight:700;font-family:'Syne',sans-serif;padding:2px 8px;border-radius:100px;margin-bottom:6px;">● Real User</div>` : '';
+
+  let actionBtns = '';
+  if(status === 'connected'){
+    actionBtns = `
+      <button class="btn btn-teal btn-sm" onclick="openChat('${c.id}')">💬 Message</button>
+      <button class="btn btn-outline btn-sm" onclick="viewProfile('${c.id}')">View Profile</button>`;
+  } else if(status === 'pending_sent'){
+    actionBtns = `
+      <button class="btn btn-sm btn-pending" disabled>⏳ Request Sent</button>
+      <button class="btn btn-outline btn-sm" onclick="viewProfile('${c.id}')">View Profile</button>`;
+  } else if(status === 'pending_received'){
+    actionBtns = `
+      <button class="btn btn-teal btn-sm" onclick="acceptRequest('${c.id}')">✓ Accept Request</button>
+      <button class="btn btn-outline btn-sm" onclick="declineRequest('${c.id}')">✗ Decline</button>`;
+  } else {
+    actionBtns = `
+      <button class="btn btn-sm btn-connect" onclick="sendConnectionRequest('${c.id}')">🤝 Connect</button>
+      <button class="btn btn-outline btn-sm" onclick="viewProfile('${c.id}')">View Profile</button>`;
+  }
+
+  // avatar initials for real users
+  const avatarHtml = c.isRealUser
+    ? `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--teal);color:var(--white);font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;">${c.name.split(' ').map(x=>x[0]).join('').toUpperCase().slice(0,2)}</div>`
+    : emoji;
+
+  return `
+    <div class="rec-card" data-id="${c.id}" data-type="${c.type}" data-interests="${(c.interests||[]).join(',')}" data-name="${c.name}" data-dest="${c.destination||''}" data-post="${(c.post||'').replace(/"/g,'&quot;')}">
+      <div class="rec-img" style="background:${c.isRealUser?'var(--teal)':bg};font-size:3rem;padding:0;">${avatarHtml}</div>
+      <div class="rec-body">
+        ${realBadge}${connectedBadge}
+        <div class="rec-name">${c.name}${c.age?`, ${c.age}`:''}</div>
+        <div class="rec-country">${c.location||''}${c.destination?' → '+c.destination:''}</div>
+        <div class="rec-why">${c.post||''}</div>
+        <div class="rec-tags">
+          <span class="tag ${tagClass}">${tagLabel}</span>
+          ${interestTags}
+        </div>
+        ${c.matchScore?`<div class="match-score">
+          <span>Match</span>
+          <div class="match-bar"><div class="match-fill" style="width:${c.matchScore}%"></div></div>
+          <span>${c.matchScore}%</span>
+        </div>`:''}
+        <div class="connect-btn-group">${actionBtns}</div>
+      </div>
+    </div>`;
+}
+
+function toggleInbox(){
+  const panel = document.getElementById('inbox-panel');
+  if(panel) panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+}
+
+function sendConnectionRequest(id){
+  if(!STATE.connections) STATE.connections = {};
+  STATE.connections[id] = 'pending_sent';
+  save();
+  // Simulate: after 4–8 seconds the other user might accept (50% chance demo)
+  const delay = 4000 + Math.random() * 4000;
+  setTimeout(()=>simulateResponse(id), delay);
+  renderConnectMain(document.getElementById('connect-content'));
+  showToast(`Connection request sent! Waiting for them to accept.`);
+}
+
+function simulateResponse(id){
+  // Only act if still pending
+  if((STATE.connections||{})[id] !== 'pending_sent') return;
+  const companion = (STATE.connectData||[]).find(c=>c.id===id);
+  if(!companion) return;
+  // 60% accept, 40% leave pending (user can see it stays as "Request Sent")
+  if(Math.random() > 0.4){
+    STATE.connections[id] = 'connected';
+    save();
+    if(STATE.currentPage === 'connect'){
+      renderConnectMain(document.getElementById('connect-content'));
+    }
+    showToast(`🎉 ${companion.name} accepted your connection request! You can now message them.`);
+  }
+}
+
+function acceptRequest(id){
+  if(!STATE.connections) STATE.connections = {};
+  STATE.connections[id] = 'connected';
+  // Remove from inbox
+  STATE.connectionRequests = (STATE.connectionRequests||[]).filter(r=>r.id!==id);
+  save();
+  renderConnectMain(document.getElementById('connect-content'));
+  const companion = (STATE.connectData||[]).find(c=>c.id===id);
+  showToast(`✓ Connected with ${companion ? companion.name : 'them'}! You can now message each other.`);
+}
+
+function declineRequest(id){
+  if(!STATE.connections) STATE.connections = {};
+  delete STATE.connections[id];
+  STATE.connectionRequests = (STATE.connectionRequests||[]).filter(r=>r.id!==id);
+  save();
+  renderConnectMain(document.getElementById('connect-content'));
+}
+
+function showToast(msg){
+  const t = document.createElement('div');
+  t.style.cssText = `position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--white);padding:12px 20px;border-radius:var(--radius-sm);font-size:0.88rem;z-index:500;max-width:360px;text-align:center;box-shadow:var(--shadow-lg);animation:fadeUp 0.3s ease;`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(), 4000);
+}
+
+function filterConnect(){
+  const search = (document.getElementById('connect-search')||{}).value?.toLowerCase()||'';
+  ['connect-grid','connect-grid-real'].forEach(gridId=>{
+    const cards = document.querySelectorAll(`#${gridId} .rec-card`);
+    cards.forEach(card => {
+      const name = (card.dataset.name||'').toLowerCase();
+      const dest = (card.dataset.dest||'').toLowerCase();
+      const post = (card.dataset.post||'').toLowerCase();
+      const type = card.dataset.type;
+      const interests = (card.dataset.interests||'').split(',');
+      const matchesSearch = !search || name.includes(search) || dest.includes(search) || post.includes(search);
+      const matchesFilter = STATE.connectFilters.length === 0 || STATE.connectFilters.includes(type === 'seeking' ? 'Seeking Companions' : 'Offering to Join') || STATE.connectFilters.some(f => interests.includes(f));
+      card.style.display = matchesSearch && matchesFilter ? 'block' : 'none';
+    });
+  });
+}
+
+function toggleConnectFilter(f){
+  const idx = STATE.connectFilters.indexOf(f);
+  if(idx >= 0) STATE.connectFilters.splice(idx, 1);
+  else STATE.connectFilters.push(f);
+  renderConnectMain(document.getElementById('connect-content'));
+}
+
+function openPostModal(){
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.innerHTML = `
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h3>Post Travel Companion Request</h3>
+        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-size:1.4rem;color:var(--ink3);">×</button>
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="post-type">
+          <option value="seeking">Seeking Companions</option>
+          <option value="offering">Offering to Join</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Destination</label><input type="text" id="post-dest" placeholder="e.g., Paris, France"/></div>
+      <div class="form-group"><label>Dates</label><input type="text" id="post-dates" placeholder="e.g., June 15-25"/></div>
+      <div class="form-group"><label>Your Message</label><textarea id="post-msg" rows="4" placeholder="Describe what you're looking for..."></textarea></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="submitPost()">Post</button>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.style.display = 'flex';
+}
+
+function submitPost(){
+  const type = document.getElementById('post-type').value;
+  const dest = document.getElementById('post-dest').value;
+  const dates = document.getElementById('post-dates').value;
+  const msg = document.getElementById('post-msg').value;
+  if(!dest || !msg){alert('Fill in destination and message');return;}
+  const newPost = {
+    id: 'c' + Date.now(),
+    name: STATE.user.name,
+    age: 25,
+    location: 'Your Location',
+    destination: dest,
+    dates: dates,
+    type: type,
+    post: msg,
+    interests: ['Culture'],
+    matchScore: 95
+  };
+  STATE.connectData.unshift(newPost);
+  save();
+  document.querySelector('.modal-overlay').remove();
+  renderConnectMain(document.getElementById('connect-content'));
+  // Simulate someone sending YOU a connection request after a delay
+  const responders = (STATE.connectData||[]).filter(c=>c.id!==newPost.id);
+  if(responders.length > 0){
+    const responder = responders[Math.floor(Math.random()*responders.length)];
+    const delay = 5000 + Math.random()*5000;
+    setTimeout(()=>{
+      if((STATE.connections||{})[responder.id]) return; // already connected
+      STATE.connections[responder.id] = 'pending_received';
+      if(!STATE.connectionRequests) STATE.connectionRequests = [];
+      if(!STATE.connectionRequests.find(r=>r.id===responder.id)){
+        STATE.connectionRequests.push(responder);
+      }
+      save();
+      if(STATE.currentPage === 'connect'){
+        renderConnectMain(document.getElementById('connect-content'));
+      }
+      showToast(`🔔 ${responder.name} wants to connect with you!`);
+    }, delay);
+  }
+}
+
+function openChat(id){
+  const allUsers = loadAllUsers();
+  const companion = (STATE.connectData||[]).find(c => c.id === id) || allUsers.find(u=>u.id===id);
+  if(!companion)return;
+  const status = (STATE.connections||{})[id];
+  if(status !== 'connected'){
+    showToast('You need to be connected before you can message this person.');
+    return;
+  }
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.innerHTML = `
+    <div class="modal" style="max-width:500px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h3>Chat with ${companion.name}</h3>
+        <button onclick="this.parentElement.parentElement.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-size:1.4rem;color:var(--ink3);">×</button>
+      </div>
+      <div id="chat-messages" style="height:300px;overflow-y:auto;border:1px solid var(--sand2);border-radius:var(--radius-sm);padding:1rem;margin-bottom:1rem;background:var(--sand);">
+        <div style="text-align:center;color:var(--ink3);font-size:0.9rem;margin-bottom:1rem;">Start chatting!</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <input type="text" id="chat-input" placeholder="Type a message..." style="flex:1;padding:10px;border:1px solid var(--sand2);border-radius:var(--radius-sm);"/>
+        <button class="btn btn-primary btn-sm" onclick="sendMessage('${id}')">Send</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  modal.style.display = 'flex';
+}
+
+function sendMessage(id){
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if(!msg)return;
+  const messages = document.getElementById('chat-messages');
+  messages.innerHTML += `<div style="margin-bottom:8px;"><strong>You:</strong> ${msg}</div>`;
+  input.value = '';
+  setTimeout(() => {
+    messages.innerHTML += `<div style="margin-bottom:8px;color:var(--ink3);"><strong>${STATE.connectData.find(c => c.id === id).name}:</strong> Thanks for reaching out! Sounds great.</div>`;
+    messages.scrollTop = messages.scrollHeight;
+  }, 1000);
+}
+
+function viewProfile(id){
+  const allUsers = loadAllUsers();
+  const companion = (STATE.connectData||[]).find(c => c.id === id) || allUsers.find(u=>u.id===id);
+  if(!companion){alert('Profile not found');return;}
+  alert(`Profile: ${companion.name}\nFrom: ${companion.location||'N/A'}\nTraveling to: ${companion.destination||'N/A'}\nDates: ${companion.dates||'N/A'}\n\n${companion.post||''}`);
+}
+
+function handleImageUpload(input){
+  const file=input.files[0];
+  if(file)processImageFile(file);
+}
+
+async function processImageFile(file){
+  const result=document.getElementById('translate-result');
+  result.innerHTML=`<div class="loading"><div class="spinner"></div>Reading image…</div>`;
+  const reader=new FileReader();
+  reader.onload=async function(e){
+    const base64=e.target.result.split(',')[1];
+    const mediaType=file.type||'image/jpeg';
+    // Show preview
+    result.innerHTML=`
+      <div class="translate-result">
+        <img src="${e.target.result}" class="uploaded-img" alt="Uploaded image"/>
+        <div class="loading" style="padding:1rem 0;"><div class="spinner"></div>Ollama is translating…</div>
+      </div>`;
+    try {
+      const translationPrompt = `You are a helpful translation assistant for travelers. Analyze this image and:
+1) Identify what type of document/sign/material this is (e.g., restaurant menu, street sign, product label, etc.)
+2) Extract and translate all visible text to English
+3) Provide one helpful note for a traveler
+
+Keep your response concise and well-formatted.`;
+      
+      const response=await fetch(`${OLLAMA_API}/api/generate`,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          model: OLLAMA_MODEL,
+          prompt: fullMessage,
+          stream: false,
+          options: { // Move num_predict inside options
+            num_predict: maxTokens
+          }
+        })
+      });
+      const data=await response.json();
+      const text=data.response||'Could not read image.';
+      result.innerHTML=`
+        <div class="translate-result">
+          <img src="${e.target.result}" class="uploaded-img" alt="Uploaded image"/>
+          <h4>Translation Result</h4>
+          <p>${text.replace(/\n/g,'<br/>')}</p>
+          <button class="btn btn-outline btn-sm" style="margin-top:1rem;" onclick="document.getElementById('img-upload').click()">Translate another →</button>
+        </div>`;
+    } catch(err){
+      result.innerHTML=`<div class="translate-result"><img src="${e.target.result}" class="uploaded-img" alt="Uploaded"/><h4>Error</h4><p>${err.message}</p><p style="font-size:0.85rem;color:var(--ink3);margin-top:1rem;">Make sure Ollama is running at http://localhost:11434</p></div>`;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+// ===== Active Demo Overrides =====
+// The functions below intentionally override earlier legacy implementations.
+// Keep demo-facing changes here so the live path stays predictable.
+function getFallbackRecs(){
+  const prefs = STATE.preferences || {};
+  const styles = prefs.travelStyle || [];
+  const regions = prefs.region || ['Anywhere!'];
+  const regionOpen = regions.includes('Anywhere!');
+  const budget = prefs.budget || 300;
+  const duration = prefs.duration || 10;
+  const climate = prefs.climate || 'Any Climate';
+  const travelWith = prefs.travelWith || 'Solo';
+  const palette = ['#E8F6F4','#FCEFE3','#FBEDE8','#EAF1F8','#F2EAF7'];
+  const catalog = [
+    {name:'Lisbon',country:'Portugal',emoji:'🏛️',region:'Europe',climate:'Mediterranean',budgetBand:'mid',hours:7,tags:['Culture & History','Food & Cuisine','Art & Architecture'],highlights:['Belém Tower','Alfama','Time Out Market']},
+    {name:'Kyoto',country:'Japan',emoji:'🏯',region:'Asia',climate:'Temperate & Mild',budgetBand:'mid',hours:14,tags:['Culture & History','Food & Cuisine','Relaxation & Wellness'],highlights:['Fushimi Inari','Gion','Arashiyama']},
+    {name:'Bali',country:'Indonesia',emoji:'🌴',region:'Asia',climate:'Tropical & Warm',budgetBand:'low',hours:19,tags:['Relaxation & Wellness','Adventure & Outdoors','Nightlife & Social'],highlights:['Ubud','Seminyak','Rice terraces']},
+    {name:'Medellin',country:'Colombia',emoji:'🌺',region:'South America',climate:'Temperate & Mild',budgetBand:'low',hours:5,tags:['Nightlife & Social','Food & Cuisine','Culture & History'],highlights:['Comuna 13','El Poblado','Coffee tours']},
+    {name:'Buenos Aires',country:'Argentina',emoji:'💃',region:'South America',climate:'Temperate & Mild',budgetBand:'mid',hours:11,tags:['Food & Cuisine','Nightlife & Social','Culture & History','Art & Architecture'],highlights:['San Telmo','Tango nights','Recoleta']},
+    {name:'Cusco',country:'Peru',emoji:'🦙',region:'South America',climate:'Alpine & Cool',budgetBand:'low',hours:9,tags:['Adventure & Outdoors','Culture & History','Wildlife & Nature'],highlights:['Sacred Valley','Andean markets','Machu Picchu gateway']},
+    {name:'Santiago',country:'Chile',emoji:'🍷',region:'South America',climate:'Mediterranean',budgetBand:'mid',hours:10,tags:['Food & Cuisine','Adventure & Outdoors','Culture & History'],highlights:['Andes views','Wine valleys','Bellavista']},
+    {name:'Rio de Janeiro',country:'Brazil',emoji:'🌞',region:'South America',climate:'Tropical & Warm',budgetBand:'mid',hours:10,tags:['Adventure & Outdoors','Nightlife & Social','Relaxation & Wellness'],highlights:['Sugarloaf','Copacabana','Santa Teresa']},
+    {name:'Cape Town',country:'South Africa',emoji:'🌅',region:'Africa',climate:'Mediterranean',budgetBand:'mid',hours:16,tags:['Adventure & Outdoors','Wildlife & Nature','Food & Cuisine'],highlights:['Table Mountain','Winelands','Boulders Beach']},
+    {name:'Marrakech',country:'Morocco',emoji:'🕌',region:'Africa',climate:'Desert & Dry',budgetBand:'mid',hours:8,tags:['Culture & History','Shopping & Fashion','Food & Cuisine'],highlights:['Medina','Riads','Jemaa el-Fnaa']},
+    {name:'Reykjavik',country:'Iceland',emoji:'❄️',region:'Europe',climate:'Alpine & Cool',budgetBand:'high',hours:6,tags:['Wildlife & Nature','Adventure & Outdoors','Relaxation & Wellness'],highlights:['Blue Lagoon','Golden Circle','Northern lights']},
+    {name:'Mexico City',country:'Mexico',emoji:'🎨',region:'North America',climate:'Temperate & Mild',budgetBand:'low',hours:5,tags:['Food & Cuisine','Art & Architecture','Culture & History','Nightlife & Social'],highlights:['Roma Norte','Coyoacan','Street food']},
+    {name:'Dubrovnik',country:'Croatia',emoji:'🌊',region:'Europe',climate:'Mediterranean',budgetBand:'mid',hours:10,tags:['Culture & History','Relaxation & Wellness','Adventure & Outdoors'],highlights:['Old Town','Island trips','City walls']},
+    {name:'Queenstown',country:'New Zealand',emoji:'🏔️',region:'Australia',climate:'Alpine & Cool',budgetBand:'high',hours:18,tags:['Adventure & Outdoors','Wildlife & Nature','Nightlife & Social'],highlights:['Milford Sound','Lake Wakatipu','Bungee jumping']}
+  ];
+
+  return catalog.map((place, idx) => {
+    let score = 58 + idx % 5;
+    const reasons = [];
+    const styleHits = styles.filter((style) => place.tags.includes(style));
+    score += styleHits.length * 10;
+    if(styleHits.length) reasons.push(`${styleHits.slice(0,2).join(' and ')} line up well here`);
+    if(regionOpen || regions.includes(place.region)){ score += 12; reasons.push(`${place.region} fits your preferred region`); }
+    if(climate === 'Any Climate' || climate === place.climate){ score += 10; reasons.push(`${place.climate.toLowerCase()} weather matches your climate pick`); }
+    if(budget <= 200 && place.budgetBand === 'low') score += 12;
+    if(budget > 200 && budget <= 450 && place.budgetBand === 'mid') score += 12;
+    if(budget > 450 && place.budgetBand === 'high') score += 12;
+    if((travelWith || '').includes('Family') && place.tags.some((tag) => ['Culture & History','Wildlife & Nature','Relaxation & Wellness'].includes(tag))) score += 5;
+    if(travelWith === 'Friends Group' && place.tags.includes('Nightlife & Social')) score += 6;
+    if(duration >= 12 && place.tags.includes('Culture & History')) score += 4;
+    return { place, score: Math.min(97, score), reasons };
+  }).sort((a,b)=>b.score-a.score).slice(0,5).map(({place, score, reasons}, i) => ({
+    name: place.name,
+    country: place.country,
+    emoji: place.emoji,
+    bgColor: palette[i % palette.length],
+    whyMatch: `${reasons[0] || 'This destination fits your questionnaire well.'} ${reasons[1] || `It also works nicely for a ${duration}-day trip around your budget.`}`,
+    bestFor: place.tags.slice(0,3).map((tag) => tag.replace('Adventure & Outdoors','Adventure').replace('Culture & History','Culture').replace('Food & Cuisine','Food').replace('Wildlife & Nature','Nature').replace('Nightlife & Social','Social').replace('Relaxation & Wellness','Wellness').replace('Art & Architecture','Art')),
+    matchScore: score,
+    flightFrom: 'NYC',
+    estFlightHours: place.hours,
+    highlights: place.highlights,
+    budgetNote: place.budgetBand === 'low' ? 'Excellent value' : place.budgetBand === 'mid' ? 'Comfortable mid-range fit' : 'Best for a premium trip'
+  }));
+}
+
+function getFallbackBookData(){
+  const dest = STATE.selectedDest||{name:'Destination',country:'',emoji:'✈️',estFlightHours:8};
+  const prefs = STATE.preferences || {};
+  const budget = prefs.budget || 300;
+  const hotelTarget = Math.max(70, Math.round(budget * 0.45));
+  const codes = {Portugal:'LIS',Japan:'KIX',Colombia:'MDE',Thailand:'CNX','South Africa':'CPT',Indonesia:'DPS',Iceland:'KEF',Mexico:'MEX',Croatia:'DBV',Canada:'YVR',Morocco:'RAK','New Zealand':'ZQN'};
+  const areas = {
+    Lisbon:['Baixa','Alfama','Bairro Alto','Príncipe Real'], Kyoto:['Gion','Higashiyama','Central Kyoto','Arashiyama'],
+    Medellin:['El Poblado','Laureles','Envigado','Centro'], 'Chiang Mai':['Old City','Nimman','Riverside','Night Bazaar'],
+    'Cape Town':['City Bowl','Sea Point','V&A Waterfront','Gardens'], Bali:['Seminyak','Ubud','Canggu','Uluwatu'],
+    Reykjavik:['Miðborg','Harbor District','Laugavegur','Hlíðar'], 'Mexico City':['Roma Norte','Condesa','Polanco','Centro Histórico'],
+    Dubrovnik:['Old Town','Ploče','Lapad','Gruz'], Vancouver:['Downtown','Yaletown','West End','Gastown'],
+    Marrakech:['Medina','Gueliz','Hivernage','Kasbah'], Queenstown:['Town Centre','Frankton','Fernhill','Lakefront']
+  };
+  const airport = codes[dest.country] || 'INT';
+  const localAreas = areas[dest.name] || ['Central District','Old Town','Waterfront','Arts Quarter'];
+  return {
+    flights:[
+      {id:'f1',airline:'United Airlines',from:'JFK',to:airport,departure:'19:00',arrival:'07:15+1',duration:`${dest.estFlightHours || 8}h 15m`,stops:0,class:'Economy',price:Math.max(380, Math.round(budget * 1.9)),tags:['Nonstop','Best value']},
+      {id:'f2',airline:'Delta',from:'JFK',to:airport,departure:'22:30',arrival:'12:45+1',duration:`${(dest.estFlightHours || 8) + 2}h 05m`,stops:1,class:'Economy',price:Math.max(340, Math.round(budget * 1.55)),tags:['1 Stop','Cheapest']},
+      {id:'f3',airline:'American Airlines',from:'JFK',to:airport,departure:'10:00',arrival:'23:30',duration:`${(dest.estFlightHours || 8) + 3}h 10m`,stops:1,class:'Premium Economy',price:Math.max(620, Math.round(budget * 2.6)),tags:['Extra comfort','Flexible']},
+      {id:'f4',airline:'JetBlue',from:'JFK',to:airport,departure:'17:45',arrival:'09:00+1',duration:`${(dest.estFlightHours || 8) + 1}h 30m`,stops:0,class:'Economy',price:Math.max(430, Math.round(budget * 2.1)),tags:['Popular','Good timing']}
+    ],
+    hotels:[
+      {id:'h1',name:`${dest.name} Grand House`,stars:5,area:localAreas[0],pricePerNight:Math.round(hotelTarget * 1.8),rating:4.8,amenities:['WiFi','Spa','Breakfast','Concierge'],tags:['Best rated','City center']},
+      {id:'h2',name:`${dest.name} Atelier Hotel`,stars:4,area:localAreas[1],pricePerNight:Math.round(hotelTarget * 1.25),rating:4.6,amenities:['WiFi','Bar','Pool'],tags:['Boutique','Great views']},
+      {id:'h3',name:`The ${dest.name} Stay`,stars:4,area:localAreas[2],pricePerNight:Math.round(hotelTarget),rating:4.4,amenities:['WiFi','Restaurant','Gym'],tags:['Good value','Comfortable']},
+      {id:'h4',name:`${dest.name} Social Lodge`,stars:3,area:localAreas[3],pricePerNight:Math.max(55, Math.round(hotelTarget * 0.62)),rating:4.3,amenities:['WiFi','Breakfast','Locker'],tags:['Budget-friendly','Most social']}
+    ]
+  };
+}
+
+function getFallbackActivities(){
+  const dest = STATE.selectedDest || {name:'your destination', country:''};
+  const prefs = STATE.preferences || {};
+  const styles = prefs.travelStyle || [];
+  const poolByStyle = {
+    'Culture & History': [
+      {name:`${dest.name} old town walk`,emoji:'🏛️',category:'Culture',duration:'2-3 hours',cost:'Free',timeOfDay:'Morning',description:`Explore the historic heart of ${dest.name} with time for landmarks, architecture, and local stories.`,tips:'Start early for quieter streets.',indoor:false},
+      {name:`${dest.name} museum afternoon`,emoji:'🎨',category:'Culture',duration:'2-3 hours',cost:'$10-20',timeOfDay:'Afternoon',description:`Spend an afternoon with the destination's best art or history collection.`,tips:'Check for free-entry hours.',indoor:true}
+    ],
+    'Food & Cuisine': [
+      {name:`${dest.name} market tasting`,emoji:'🥘',category:'Food',duration:'2 hours',cost:'$10-20',timeOfDay:'Morning',description:`Sample signature bites and seasonal produce in a lively local market.`,tips:'Go hungry and pace yourself.',indoor:false},
+      {name:`${dest.name} cooking class`,emoji:'👨‍🍳',category:'Food',duration:'3 hours',cost:'$50+',timeOfDay:'Evening',description:`Learn a local dish and understand the flavors that define ${dest.name}.`,tips:'Book ahead if you want a small class.',indoor:true}
+    ],
+    'Adventure & Outdoors': [
+      {name:`${dest.name} scenic hike`,emoji:'🥾',category:'Adventure',duration:'3-4 hours',cost:'Free',timeOfDay:'Morning',description:`Head outside for the kind of active outing that shows off ${dest.name}'s natural side.`,tips:'Bring water and layers.',indoor:false},
+      {name:`${dest.name} adrenaline session`,emoji:'🌋',category:'Adventure',duration:'2 hours',cost:'$30-50',timeOfDay:'Afternoon',description:`Pick one signature outdoor thrill or guided active experience nearby.`,tips:'Reserve the earlier slot for best conditions.',indoor:false}
+    ],
+    'Relaxation & Wellness': [
+      {name:`${dest.name} spa reset`,emoji:'🧘',category:'Wellness',duration:'2 hours',cost:'$30-50',timeOfDay:'Afternoon',description:`Slow the pace with a wellness stop designed to recharge mid-trip.`,tips:'Great on your first full day.',indoor:true}
+    ],
+    'Nightlife & Social': [
+      {name:`${dest.name} evening bar circuit`,emoji:'🍸',category:'Nightlife',duration:'3 hours',cost:'$30-50',timeOfDay:'Evening',description:`See the social side of ${dest.name} with a lively evening route.`,tips:'Start late and keep it flexible.',indoor:false}
+    ],
+    'Wildlife & Nature': [
+      {name:`${dest.name} nature escape`,emoji:'🌿',category:'Nature',duration:'Half day',cost:'$10-20',timeOfDay:'Morning',description:`Step away from the city core for green space, viewpoints, or wildlife nearby.`,tips:'Bring a camera for the quiet moments.',indoor:false}
+    ]
+  };
+  const chosen = styles.length ? styles : ['Culture & History','Food & Cuisine','Adventure & Outdoors'];
+  const results = [];
+  chosen.forEach((style) => {
+    (poolByStyle[style] || []).forEach((item) => {
+      if(results.length < 8) results.push(item);
+    });
+  });
+  const fillers = [
+    {name:`${dest.name} panoramic viewpoint`,emoji:'🌄',category:'Culture',duration:'1-2 hours',cost:'Free',timeOfDay:'Afternoon',description:`Catch the best wide-angle view over ${dest.name} and the surrounding landscape.`,tips:'Golden hour is best.',indoor:false},
+    {name:`${dest.name} neighborhood cafe hop`,emoji:'☕',category:'Food',duration:'2 hours',cost:'$10-20',timeOfDay:'Morning',description:`Slow down and sample a few local coffee or pastry spots.`,tips:'Pair this with a walking route.',indoor:true},
+    {name:`${dest.name} day trip`,emoji:'🚞',category:'Day Trip',duration:'Full day',cost:'$30-50',timeOfDay:'Morning',description:`Use one day to explore a nearby town, coastline, or scenic route beyond ${dest.name}.`,tips:'Leave early for the smoothest day.',indoor:false}
+  ];
+  fillers.forEach((item) => {
+    if(results.length < 8) results.push(item);
+  });
+  return results.slice(0,8);
+}
+
+async function generatePlanRecs(filters){
+  const el = document.getElementById('plan-content');
+  el.innerHTML = `<div class="loading"><div class="spinner"></div>Ollama is finding your perfect destinations...</div>`;
+  const prefs = STATE.preferences || {};
+  const filterStr = filters&&filters.length>0?`\nActive filters: ${filters.join(', ')}`:'';
+  const selectedRegions = prefs.region || ['Anywhere!'];
+  const strictRegionExamples = getContinentRuleExamples(selectedRegions);
+  const prompt = `You are a world-class travel recommendation AI. Based on these preferences, recommend exactly 5 travel destinations.
+
+User preferences:
+- Travel style: ${JSON.stringify(prefs.travelStyle || [])}
+- Daily budget per person: $${prefs.budget}
+- Trip duration: ${prefs.duration} days
+- Climate preference: ${prefs.climate}
+- Travelling with: ${prefs.travelWith}
+- Continent preference: ${JSON.stringify(selectedRegions)}
+${filterStr}
+
+Important continent rule:
+- If the continent preference is not "Anywhere!", every destination MUST be inside one of the selected continents.
+- Do not include destinations outside the selected continent(s) for variety.
+- Continent mapping must follow this app's geography:
+  North America = Canada, United States, Mexico and nearby North American destinations
+  South America = Colombia, Brazil, Peru, Argentina, Chile and nearby South American destinations
+  Europe = European countries only
+  Asia = Asian countries only
+  Africa = African countries only
+  Australia = Australia, New Zealand and nearby Pacific destinations
+  Antarctica = Antarctic destinations only
+${strictRegionExamples ? `- Use only countries from these allowed continent examples:\n${strictRegionExamples}` : ''}
+
+Important destination rule:
+- Recommend cities, towns, or clearly travelable regions.
+- Do not use fake landmarks or inaccurate highlights.
+- Do not pad with destinations from other continents just to reach 5.
+
+Return ONLY a valid JSON array with exactly 5 UNIQUE objects. Keep the output compact.
+Each object must have only these keys:
+{
+  "name": "City Name",
+  "country": "Country",
+  "whyMatch": "1 short sentence explaining why this matches their preferences",
+  "bestFor": ["tag1","tag2","tag3"],
+  "matchScore": 85,
+  "estFlightHours": 8,
+  "highlights": ["highlight1","highlight2"]
+}
+
+Return ONLY the JSON array, no other text.`;
+
+  try {
+    let raw = await callOllamaJson('You are a travel recommendation AI. Return valid JSON only.', prompt, 1200);
+    let recs;
+    try {
+      recs = extractPlanRecs(JSON.parse(raw.trim()));
+    } catch (parseError) {
+      const retryPrompt = `${prompt}
+
+Important retry rule:
+- Your previous answer was invalid or incomplete.
+- Return a shorter JSON array with exactly 5 unique destinations.
+- Keep whyMatch under 18 words.
+- Keep each highlight under 6 words.
+- Do not repeat destinations.`;
+      raw = await callOllamaJson('You are a travel recommendation AI. Return valid JSON only.', retryPrompt, 1000);
+      recs = extractPlanRecs(JSON.parse(raw.trim()));
+    }
+
+    if(!Array.isArray(recs)) throw new Error('Plan recommendations were not returned as an array.');
+
+    let normalized = recs
+      .map((rec, index) => normalizePlanRec(rec, index))
+      .filter((rec) => rec.name && rec.country);
+    let regionFiltered = filterPlanRecsByRegion(normalized, selectedRegions);
+
+    if(!selectedRegions.includes('Anywhere!') && regionFiltered.length < 5){
+      const invalidExamples = normalized
+        .filter((rec) => !selectedRegions.includes(getRegionForCountry(rec.country)))
+        .map((rec) => `${rec.name}, ${rec.country}`)
+        .slice(0, 5)
+        .join('; ');
+      const repairPrompt = `${prompt}
+
+Your previous answer included destinations outside the allowed continent selection.
+Invalid examples: ${invalidExamples || 'none listed'}.
+
+Repair rules:
+- Return 5 unique destinations only from ${selectedRegions.join(', ')}.
+- If you cannot satisfy the request, still return your 5 best valid destinations from ${selectedRegions.join(', ')}.
+- Do not include destinations from any other continent.
+- Prefer real cities or well-known travel regions with accurate highlights.`;
+      raw = await callOllamaJson('You are a travel recommendation AI. Return valid JSON only.', repairPrompt, 1000);
+      recs = extractPlanRecs(JSON.parse(raw.trim()));
+      normalized = recs
+        .map((rec, index) => normalizePlanRec(rec, index))
+        .filter((rec) => rec.name && rec.country);
+      regionFiltered = filterPlanRecsByRegion(normalized, selectedRegions);
+    }
+
+    const seen = new Set();
+    const deduped = [];
+
+    regionFiltered.forEach((rec) => {
+      const key = `${rec.name}|${rec.country}`.toLowerCase();
+      if(!seen.has(key) && deduped.length < 5){
+        seen.add(key);
+        deduped.push(rec);
+      }
+    });
+
+    if(deduped.length < 5){
+      throw new Error('Model did not return five valid destinations.');
+    }
+
+    STATE.planRecs = deduped;
+    save();
+    renderPlanRecs(el);
+  } catch(e){
+    console.error('Plan generation error:', e);
+    el.innerHTML = `
+      <div class="card" style="max-width:720px;margin:0 auto;text-align:center;">
+        <h3 style="margin-bottom:0.75rem;">Couldn&apos;t generate 5 clean destinations yet</h3>
+        <p style="color:var(--ink3);line-height:1.7;margin-bottom:1.25rem;">
+          The local model returned incomplete or invalid results, so no fallback list was shown. Try refreshing picks once more.
+        </p>
+        <button class="btn btn-teal" onclick="generatePlanRecs(STATE.planFilters)">Try again</button>
+      </div>`;
+  }
+}
+
+function normalizeAndFilterPlanRecs(rawRecs, selectedRegions){
+  const normalized = (Array.isArray(rawRecs) ? rawRecs : [])
+    .map((rec, index) => normalizePlanRec(rec, index))
+    .filter((rec) => rec.name && rec.country);
+  const filtered = filterPlanRecsByRegion(normalized, selectedRegions);
+  const seen = new Set();
+  const deduped = [];
+  filtered.forEach((rec) => {
+    const key = `${rec.name}|${rec.country}`.toLowerCase();
+    if(!seen.has(key)){
+      seen.add(key);
+      deduped.push(rec);
+    }
+  });
+  return deduped;
+}
+
+async function requestPlanRecBatch(prompt, maxTokens){
+  const raw = await callOllamaJson('You are a travel recommendation AI. Return valid JSON only.', prompt, maxTokens);
+  return extractPlanRecs(JSON.parse(raw.trim()));
+}
+
+async function generatePlanRecs(filters){
+  const el = document.getElementById('plan-content');
+  el.innerHTML = `<div class="loading"><div class="spinner"></div>Ollama is finding your perfect destinations...</div>`;
+  const prefs = STATE.preferences || {};
+  const filterStr = filters&&filters.length>0?`\nActive filters: ${filters.join(', ')}`:'';
+  const selectedRegions = prefs.region || ['Anywhere!'];
+  const strictRegionExamples = getContinentRuleExamples(selectedRegions);
+  const basePrompt = `You are a world-class travel recommendation AI. Based on these preferences, recommend exactly 5 travel destinations.
+
+User preferences:
+- Travel style: ${JSON.stringify(prefs.travelStyle || [])}
+- Daily budget per person: $${prefs.budget}
+- Trip duration: ${prefs.duration} days
+- Climate preference: ${prefs.climate}
+- Travelling with: ${prefs.travelWith}
+- Continent preference: ${JSON.stringify(selectedRegions)}
+${filterStr}
+
+Important continent rule:
+- If the continent preference is not "Anywhere!", every destination MUST be inside one of the selected continents.
+- Do not include destinations outside the selected continent(s) for variety.
+- Continent mapping must follow this app's geography:
+  North America = Canada, United States, Mexico and nearby North American destinations
+  South America = Colombia, Brazil, Peru, Argentina, Chile and nearby South American destinations
+  Europe = European countries only
+  Asia = Asian countries only
+  Africa = African countries only
+  Australia = Australia, New Zealand and nearby Pacific destinations
+  Antarctica = Antarctic destinations only
+${strictRegionExamples ? `- Use only countries from these allowed continent examples:\n${strictRegionExamples}` : ''}
+
+Important destination rule:
+- Recommend cities, towns, or clearly travelable regions.
+- Do not use fake landmarks or inaccurate highlights.
+- Do not pad with destinations from other continents just to reach 5.
+
+Return ONLY a valid JSON object with this shape:
+{
+  "destinations": [
+    {
+      "name": "City Name",
+      "country": "Country",
+      "whyMatch": "1 short sentence explaining why this matches their preferences",
+      "bestFor": ["tag1","tag2","tag3"],
+      "matchScore": 85,
+      "estFlightHours": 8,
+      "highlights": ["highlight1","highlight2"]
+    }
+  ]
+}
+
+Return exactly 5 UNIQUE destinations.`;
+
+  try {
+    let collected = [];
+    let attempts = 0;
+    let prompt = basePrompt;
+
+    while(collected.length < 5 && attempts < 4){
+      attempts += 1;
+      const remaining = 5 - collected.length;
+      const batch = await requestPlanRecBatch(prompt, attempts === 1 ? 1200 : 1000);
+      const normalizedBatch = normalizeAndFilterPlanRecs(batch, selectedRegions);
+      const seen = new Set(collected.map((rec) => `${rec.name}|${rec.country}`.toLowerCase()));
+      normalizedBatch.forEach((rec) => {
+        const key = `${rec.name}|${rec.country}`.toLowerCase();
+        if(!seen.has(key) && collected.length < 5){
+          seen.add(key);
+          collected.push(rec);
+        }
+      });
+
+      if(collected.length >= 5) break;
+
+      const existing = collected.map((rec) => `${rec.name}, ${rec.country}`).join('; ') || 'none yet';
+      prompt = `${basePrompt}
+
+Repair pass ${attempts}:
+- You have already suggested: ${existing}
+- Return exactly ${remaining} additional UNIQUE destinations only.
+- Do not repeat any previously suggested destination.
+- Every result must stay inside: ${selectedRegions.join(', ')}.
+- Keep highlights short and real.`;
+    }
+
+    if(collected.length < 5){
+      throw new Error('Model did not return five valid destinations after multiple passes.');
+    }
+
+    STATE.planRecs = collected.slice(0, 5);
+    save();
+    renderPlanRecs(el);
+  } catch(e){
+    console.error('Plan generation error:', e);
+    el.innerHTML = `
+      <div class="card" style="max-width:720px;margin:0 auto;text-align:center;">
+        <h3 style="margin-bottom:0.75rem;">Couldn&apos;t generate 5 clean destinations yet</h3>
+        <p style="color:var(--ink3);line-height:1.7;margin-bottom:1.25rem;">
+          The local model still returned too few valid destinations after multiple repair passes. Try again once more.
+        </p>
+        <button class="btn btn-teal" onclick="generatePlanRecs(STATE.planFilters)">Try again</button>
+      </div>`;
+  }
+}
+
+// ===== INIT =====
+load();
+updateNav();
+renderPlan();
+if(STATE.selectedDest){document.getElementById('tab-book').disabled=false;}
+if(STATE.bookingRef){document.getElementById('tab-enjoy').disabled=false;}
+</script>
+<script src="/app.js"></script>
+</body>
+</html>
